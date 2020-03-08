@@ -1,0 +1,12 @@
+{
+	"name": "demo30_SQLDW_MI",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "Authentication to SQLDW (Synapse) using Managed Identity of ADFv2",
+		"annotations": [],
+		"type": "AzureSqlDW",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=demo-ignitemdw-sqlsrv.database.windows.net;Initial Catalog=demo-ignitemdw-sqldb"
+		}
+	}
+}
