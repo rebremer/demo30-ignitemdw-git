@@ -1,7 +1,7 @@
 {
 	"name": "demo30-adfv2",
 	"properties": {
-		"description": "Demo30 of MS Ignite 1",
+		"description": "Demo30 of MS Ignite 2",
 		"activities": [
 			{
 				"name": "HTTP to ADLSgen2",
