@@ -33,7 +33,7 @@
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Demo30 of MS Ignite 2",
+				"description": "Demo30 of MS Ignite 3",
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
