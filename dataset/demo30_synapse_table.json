@@ -1,0 +1,17 @@
+{
+	"name": "demo30_synapse_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "demo30_SQLDW",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Ratings"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
