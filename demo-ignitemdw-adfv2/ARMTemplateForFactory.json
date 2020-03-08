@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW'"
 		},
+		"demo30_SQLDW_MI_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW_MI'"
+		},
 		"AzureDataLakeStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -22,6 +26,10 @@
 		"HTTPSource_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv"
+		},
+		"ADLS_MI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
 		}
 	},
 	"variables": {
@@ -209,7 +217,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage",
+					"referenceName": "ADLS_MI",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -228,7 +236,7 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage')]"
+				"[concat(variables('factoryId'), '/linkedServices/ADLS_MI')]"
 			]
 		},
 		{
@@ -282,7 +290,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "demo30_SQLDW",
+					"referenceName": "demo30_SQLDW_MI",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -294,7 +302,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW')]"
+				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW_MI')]"
 			]
 		},
 		{
@@ -394,6 +402,34 @@
 				"[concat(variables('factoryId'), '/datasets/demo30_adls_csv')]",
 				"[concat(variables('factoryId'), '/datasets/demo30_synapse_table')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADLS_MI')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Authentication from ADFv2 to ADLS using Managed Identities",
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ADLS_MI_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW_MI')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Authentication to SQLDW (Synapse) using Managed Identity of ADFv2",
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('demo30_SQLDW_MI_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }

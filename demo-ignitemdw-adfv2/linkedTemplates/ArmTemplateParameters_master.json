@@ -11,11 +11,17 @@
 		"demo30_SQLDW_connectionString": {
 			"value": ""
 		},
+		"demo30_SQLDW_MI_connectionString": {
+			"value": ""
+		},
 		"AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://demoignitemdwstor.dfs.core.windows.net"
 		},
 		"HTTPSource_properties_typeProperties_url": {
 			"value": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv"
+		},
+		"ADLS_MI_properties_typeProperties_url": {
+			"value": "https://demoignitemdwstor.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"value": ""

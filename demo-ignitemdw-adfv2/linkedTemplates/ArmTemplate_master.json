@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW'"
 		},
+		"demo30_SQLDW_MI_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW_MI'"
+		},
 		"AzureDataLakeStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -22,6 +26,10 @@
 		"HTTPSource_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv"
+		},
+		"ADLS_MI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -56,11 +64,17 @@
 					"demo30_SQLDW_connectionString": {
 						"value": "[parameters('demo30_SQLDW_connectionString')]"
 					},
+					"demo30_SQLDW_MI_connectionString": {
+						"value": "[parameters('demo30_SQLDW_MI_connectionString')]"
+					},
 					"AzureDataLakeStorage_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]"
 					},
 					"HTTPSource_properties_typeProperties_url": {
 						"value": "[parameters('HTTPSource_properties_typeProperties_url')]"
+					},
+					"ADLS_MI_properties_typeProperties_url": {
+						"value": "[parameters('ADLS_MI_properties_typeProperties_url')]"
 					}
 				}
 			},
