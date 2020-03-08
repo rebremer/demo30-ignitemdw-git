@@ -2,7 +2,7 @@
 	"name": "demo30_adls_csv",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorage",
+			"referenceName": "ADLS_MI",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
