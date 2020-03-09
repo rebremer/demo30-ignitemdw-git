@@ -11,14 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'demo30_ADLS'"
 		},
-		"demo30_SQLDW_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW'"
-		},
-		"demo30_SQLDW_MI_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW_MI'"
-		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -42,6 +34,14 @@
 		"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "onpremconnectionstring"
+		},
+		"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "synapseconnectionstring"
+		},
+		"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "synapseconnectionstring"
 		}
 	},
 	"variables": {
@@ -102,33 +102,6 @@
 					"url": "[parameters('demo30_HTTP_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": "[parameters('demo30_SQLDW_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW_MI')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Authentication to SQLDW (Synapse) using Managed Identity of ADFv2",
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": "[parameters('demo30_SQLDW_MI_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -223,27 +196,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/demo30_synapse_table')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_SQLDW_MI",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Ratings"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW_MI')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/demo30_OnPremSQL')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -271,6 +223,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "demo30_AKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW_MI')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Authentication to SQLDW (Synapse) using Managed Identity of ADFv2",
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "demo30_AKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo30_onpremsql_table')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -289,6 +286,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/demo30_OnPremSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_synapse_table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo30_SQLDW_MI",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Ratings"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW_MI')]"
 			]
 		},
 		{

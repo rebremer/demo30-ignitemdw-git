@@ -11,14 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'demo30_ADLS'"
 		},
-		"demo30_SQLDW_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW'"
-		},
-		"demo30_SQLDW_MI_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW_MI'"
-		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -38,6 +30,14 @@
 		"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "onpremconnectionstring"
+		},
+		"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "synapseconnectionstring"
+		},
+		"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "synapseconnectionstring"
 		},
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -589,10 +589,19 @@
 				"annotations": [],
 				"type": "AzureSqlDW",
 				"typeProperties": {
-					"connectionString": "[parameters('demo30_SQLDW_connectionString')]"
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "demo30_AKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
+					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW_MI')]",
@@ -603,10 +612,19 @@
 				"annotations": [],
 				"type": "AzureSqlDW",
 				"typeProperties": {
-					"connectionString": "[parameters('demo30_SQLDW_MI_connectionString')]"
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "demo30_AKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
+					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-onpremintegrationruntime')]",

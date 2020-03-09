@@ -11,14 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'demo30_ADLS'"
 		},
-		"demo30_SQLDW_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW'"
-		},
-		"demo30_SQLDW_MI_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW_MI'"
-		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -38,6 +30,14 @@
 		"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "onpremconnectionstring"
+		},
+		"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "synapseconnectionstring"
+		},
+		"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "synapseconnectionstring"
 		},
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -73,12 +73,6 @@
 					"demo30_ADLS_accountKey": {
 						"value": "[parameters('demo30_ADLS_accountKey')]"
 					},
-					"demo30_SQLDW_connectionString": {
-						"value": "[parameters('demo30_SQLDW_connectionString')]"
-					},
-					"demo30_SQLDW_MI_connectionString": {
-						"value": "[parameters('demo30_SQLDW_MI_connectionString')]"
-					},
 					"demo30_ADLS_properties_typeProperties_url": {
 						"value": "[parameters('demo30_ADLS_properties_typeProperties_url')]"
 					},
@@ -96,6 +90,12 @@
 					},
 					"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('demo30_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
+					},
+					"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
+					},
+					"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
