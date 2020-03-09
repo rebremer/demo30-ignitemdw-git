@@ -1,7 +1,7 @@
 {
 	"name": "demo30_ignitemdw",
 	"properties": {
-		"description": "Demo30 of MS Ignite 8",
+		"description": "Demo30 of MS Ignite 9",
 		"activities": [
 			{
 				"name": "HTTP to ADLSgen2",
