@@ -1,5 +1,5 @@
 {
-	"name": "demo30-adfv2",
+	"name": "demo30_adfv2",
 	"properties": {
 		"description": "Demo30 of MS Ignite 5",
 		"activities": [
@@ -142,10 +142,6 @@
 						"type": "DataFlowReference"
 					},
 					"staging": {
-						"linkedService": {
-							"referenceName": "AzureDataLakeStorage",
-							"type": "LinkedServiceReference"
-						},
 						"folderPath": "data/dw-staging"
 					},
 					"compute": {

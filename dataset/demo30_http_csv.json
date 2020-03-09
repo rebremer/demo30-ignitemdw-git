@@ -1,10 +1,6 @@
 {
 	"name": "demo30_http_csv",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "HTTPSource",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
