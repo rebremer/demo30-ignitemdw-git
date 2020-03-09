@@ -9,7 +9,8 @@
 		"type": "SqlServerTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "dbo.movies"
+			"schema": "dbo",
+			"table": "movies"
 		}
 	}
 }
