@@ -43,8 +43,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "movie",
-									"type": "String"
+									"name": "movie"
 								},
 								"sink": {
 									"name": "movie",
@@ -53,8 +52,7 @@
 							},
 							{
 								"source": {
-									"name": "title",
-									"type": "String"
+									"name": "title"
 								},
 								"sink": {
 									"name": "title",
@@ -63,8 +61,7 @@
 							},
 							{
 								"source": {
-									"name": "genres",
-									"type": "String"
+									"name": "genres"
 								},
 								"sink": {
 									"name": "genres",
@@ -73,8 +70,7 @@
 							},
 							{
 								"source": {
-									"name": "year",
-									"type": "Int16"
+									"name": "year"
 								},
 								"sink": {
 									"name": "year",
@@ -83,8 +79,7 @@
 							},
 							{
 								"source": {
-									"name": "Rating",
-									"type": "Int16"
+									"name": "Rating"
 								},
 								"sink": {
 									"name": "Rating",
@@ -93,8 +88,7 @@
 							},
 							{
 								"source": {
-									"name": "Rotton Tomato",
-									"type": "Int16"
+									"name": "Rotton Tomato"
 								},
 								"sink": {
 									"name": "Rotton Tomato",
@@ -138,7 +132,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "demo30-mappingdataflow",
+						"referenceName": "demo30_mappingdataflow",
 						"type": "DataFlowReference"
 					},
 					"staging": {
