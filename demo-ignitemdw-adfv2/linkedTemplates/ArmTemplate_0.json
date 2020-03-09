@@ -523,6 +523,7 @@
 				"activities": [
 					{
 						"name": "OnPremSQL to ADLSgen2",
+						"description": "OnPremSQL to ADLSgen2",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
