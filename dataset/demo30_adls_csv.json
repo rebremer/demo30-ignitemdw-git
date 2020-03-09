@@ -1,6 +1,10 @@
 {
 	"name": "demo30_adls_csv",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "demo30_ADLS_MI",
+			"type": "LinkedServiceReference"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
