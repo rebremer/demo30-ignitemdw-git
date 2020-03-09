@@ -1,0 +1,10 @@
+{
+	"name": "demo30_AKV",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://demo-ignitemdw-akv.vault.azure.net/"
+		}
+	}
+}
