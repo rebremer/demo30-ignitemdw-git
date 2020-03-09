@@ -1,0 +1,13 @@
+{
+	"name": "demo30-ignitemdw-onpremintegrationruntime",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Self hosted integration runtime running on a VM with connectivity to on prem SQL",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourcegroups/blog-metadata-rg/providers/Microsoft.DataFactory/factories/blog-metadata-adf/integrationruntimes/shir",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}
