@@ -1,23 +1,22 @@
 {
 	"name": "demo30_OnPremSQL",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"connectionString": "Integrated Security=False;Data Source=10.100.1.4;Initial Catalog=demo-synapsemdw-onpremsql;User ID=bremerov",
-			"password": {
+			"connectionString": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
 					"referenceName": "demo30_AKV",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "onpremsqlpassword"
+				"secretName": "onpremconnectionstring"
 			}
 		},
 		"connectVia": {
 			"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
 			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
