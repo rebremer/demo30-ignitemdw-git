@@ -6,7 +6,7 @@
 		"annotations": [],
 		"type": "AzureSqlDW",
 		"typeProperties": {
-			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=demo-ignitemdw-sqlsrv.database.windows.net;Initial Catalog=demo-ignitemdw-sqldb"
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=test-edlprod1-dbs.database.windows.net;Initial Catalog=test-synapse-sqldw"
 		}
 	}
 }
