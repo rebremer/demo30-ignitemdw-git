@@ -1,0 +1,15 @@
+{
+	"name": "demo30_onpremsql_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "demo30_OnPremSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": ""
+		}
+	}
+}
