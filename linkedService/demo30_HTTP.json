@@ -1,0 +1,12 @@
+{
+	"name": "demo30_HTTP",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
