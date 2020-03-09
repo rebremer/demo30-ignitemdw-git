@@ -1,12 +1,19 @@
 {
 	"name": "demo30_SQLDW_MI",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"description": "Authentication to SQLDW (Synapse) using Managed Identity of ADFv2",
 		"annotations": [],
 		"type": "AzureSqlDW",
 		"typeProperties": {
-			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=test-edlprod1-dbs.database.windows.net;Initial Catalog=test-synapse-sqldw"
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "demo30_AKV",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "synapseconnectionstring"
+			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
