@@ -6,42 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "demo-ignitemdw-adfv2"
-		},
-		"demo30_SQLDW_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW'"
-		},
-		"demo30_SQLDW_MI_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'demo30_SQLDW_MI'"
-		},
-		"demo30_ADLS_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'demo30_ADLS'"
-		},
-		"demo30_OnPremSQL_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'demo30_OnPremSQL'"
-		},
-		"demo30_ADLS_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
-		},
-		"demo30_ADLS_MI_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
-		},
-		"demo30_HTTP_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv"
-		},
-		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourcegroups/blog-metadata-rg/providers/Microsoft.DataFactory/factories/blog-metadata-adf/integrationruntimes/shir"
-		},
-		"demo30_AKV_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://demo-ignitemdw-akv.vault.azure.net/"
 		}
 	},
 	"variables": {
@@ -153,15 +117,13 @@
 						"inputs": [
 							{
 								"referenceName": "demo30_http_csv",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "demo30_adls_csv",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -187,12 +149,7 @@
 						"typeProperties": {
 							"dataflow": {
 								"referenceName": "demo30_mappingdataflow",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"adlssource": {},
-									"sink1": {}
-								}
+								"type": "DataFlowReference"
 							},
 							"staging": {
 								"linkedService": {
@@ -291,54 +248,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/demo30_synapse_table')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_SQLDW_MI",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Ratings"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW_MI')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": "[parameters('demo30_SQLDW_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW_MI')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Authentication to SQLDW (Synapse) using Managed Identity of ADFv2",
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": "[parameters('demo30_SQLDW_MI_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/demo30_mappingdataflow')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -387,8 +296,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/demo30_adls_csv')]",
-				"[concat(variables('factoryId'), '/datasets/demo30_synapse_table')]"
+				"[concat(variables('factoryId'), '/datasets/demo30_adls_csv')]"
 			]
 		},
 		{
@@ -399,10 +307,10 @@
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "[parameters('demo30_ADLS_properties_typeProperties_url')]",
+					"url": "https://demoignitemdwstor.dfs.core.windows.net",
 					"accountKey": {
 						"type": "SecureString",
-						"value": "[parameters('demo30_ADLS_accountKey')]"
+						"value": "**********"
 					}
 				}
 			},
@@ -416,7 +324,7 @@
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "[parameters('demo30_ADLS_MI_properties_typeProperties_url')]"
+					"url": "https://demoignitemdwstor.dfs.core.windows.net"
 				}
 			},
 			"dependsOn": []
@@ -429,40 +337,12 @@
 				"annotations": [],
 				"type": "HttpServer",
 				"typeProperties": {
-					"url": "[parameters('demo30_HTTP_properties_typeProperties_url')]",
+					"url": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_OnPremSQL')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('demo30_OnPremSQL_connectionString')]",
-					"password": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "demo30_AKV",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "onpremsqlpassword"
-					}
-				},
-				"connectVia": {
-					"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/demo30-ignitemdw-onpremintegrationruntime')]",
-				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
-			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30_onpremsql_table')]",
@@ -479,24 +359,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "movies"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_OnPremSQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-onpremintegrationruntime')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"description": "Self hosted integration runtime running on a VM with connectivity to on prem SQL",
-				"typeProperties": {
-					"linkedInfo": {
-						"resourceId": "[parameters('demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId')]",
-						"authorizationType": "Rbac"
-					}
 				}
 			},
 			"dependsOn": []
@@ -600,15 +462,13 @@
 						"inputs": [
 							{
 								"referenceName": "demo30_onpremsql_table",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "demo30_adls_csv",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -634,12 +494,7 @@
 						"typeProperties": {
 							"dataflow": {
 								"referenceName": "demo30_mappingdataflow",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"adlssource": {},
-									"sink1": {}
-								}
+								"type": "DataFlowReference"
 							},
 							"staging": {
 								"linkedService": {
@@ -672,7 +527,7 @@
 				"annotations": [],
 				"type": "AzureKeyVault",
 				"typeProperties": {
-					"baseUrl": "[parameters('demo30_AKV_properties_typeProperties_baseUrl')]"
+					"baseUrl": "https://demo-ignitemdw-akv.vault.azure.net/"
 				}
 			},
 			"dependsOn": []

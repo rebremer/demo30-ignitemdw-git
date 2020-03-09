@@ -5,23 +5,32 @@
 		"factoryName": {
 			"value": "demo-ignitemdw-adfv2"
 		},
-		"AzureDataLakeStorage_accountKey": {
-			"value": ""
-		},
 		"demo30_SQLDW_connectionString": {
 			"value": ""
 		},
 		"demo30_SQLDW_MI_connectionString": {
 			"value": ""
 		},
-		"AzureDataLakeStorage_properties_typeProperties_url": {
+		"demo30_ADLS_accountKey": {
+			"value": ""
+		},
+		"demo30_OnPremSQL_connectionString": {
+			"value": ""
+		},
+		"demo30_ADLS_properties_typeProperties_url": {
 			"value": "https://demoignitemdwstor.dfs.core.windows.net"
 		},
-		"HTTPSource_properties_typeProperties_url": {
+		"demo30_ADLS_MI_properties_typeProperties_url": {
+			"value": "https://demoignitemdwstor.dfs.core.windows.net"
+		},
+		"demo30_HTTP_properties_typeProperties_url": {
 			"value": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv"
 		},
-		"ADLS_MI_properties_typeProperties_url": {
-			"value": "https://demoignitemdwstor.dfs.core.windows.net"
+		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourcegroups/blog-metadata-rg/providers/Microsoft.DataFactory/factories/blog-metadata-adf/integrationruntimes/shir"
+		},
+		"demo30_AKV_properties_typeProperties_baseUrl": {
+			"value": "https://demo-ignitemdw-akv.vault.azure.net/"
 		},
 		"containerUri": {
 			"value": ""
