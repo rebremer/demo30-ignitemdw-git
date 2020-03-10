@@ -128,7 +128,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
+					"referenceName": "demo30_ADLS",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -147,7 +147,7 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
+				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS')]"
 			]
 		},
 		{
@@ -294,7 +294,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "demo30_SQLDW_MI",
+					"referenceName": "demo30_SQLDW",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -306,7 +306,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW_MI')]"
+				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW')]"
 			]
 		},
 		{
