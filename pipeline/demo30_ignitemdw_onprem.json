@@ -131,7 +131,11 @@
 						"type": "DataFlowReference"
 					},
 					"staging": {
-						"folderPath": ""
+						"linkedService": {
+							"referenceName": "demo30_ADLS_MI",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "data/dw-staging"
 					},
 					"compute": {
 						"coreCount": 8,
