@@ -1,0 +1,47 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+steps:
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Azure Deployment:Create Or Update Resource Group action on demo-ignitemdwTEST-rg'
+  inputs:
+    azureSubscription: 'Microsoft Azure Internal Consumption (513a7987-b0d9-4106-a24d-4b3f49136ea8)'
+    resourceGroupName: 'demo-ignitemdwTEST-rg'
+    location: 'East US'
+    csmFile: '$(System.DefaultWorkingDirectory)/ADF_Publish/demo-ignitemdw-adfv2/ARMTemplateForFactory.json'
+    csmParametersFile: '$(System.DefaultWorkingDirectory)/ADF_Publish/demo-ignitemdw-adfv2/ARMTemplateParametersForFactory.json'
+    overrideParameters: '-factoryName "demo-ignitemdwTEST-adfv2"'
+steps:
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Azure Deployment:Create Or Update Resource Group action on demo-ignitemdwPROD-rg'
+  inputs:
+    azureSubscription: 'Microsoft Azure Internal Consumption (513a7987-b0d9-4106-a24d-4b3f49136ea8)'
+    resourceGroupName: 'demo-ignitemdwPROD-rg'
+    location: 'East US'
+    csmFile: '$(System.DefaultWorkingDirectory)/ADF_Publish/demo-ignitemdw-adfv2/ARMTemplateForFactory.json'
+    csmParametersFile: '$(System.DefaultWorkingDirectory)/ADF_Publish/demo-ignitemdw-adfv2/ARMTemplateParametersForFactory.json'
+    overrideParameters: '-factoryName "demo-ignitemdwPROD-adfv2"'
+steps:
+- task: AzurePowerShell@4
+  displayName: 'Run ADFv2 pipeline - standard'
+  inputs:
+    azureSubscription: 'Microsoft Azure Internal Consumption (513a7987-b0d9-4106-a24d-4b3f49136ea8)'
+    ScriptType: InlineScript
+    Inline: 'Invoke-AzDataFactoryV2Pipeline -ResourceGroupName "demo-ignitemdwPROD-rg" -DataFactoryName "demo-ignitemdwPROD-adfv2" -PipelineName "demo30_ignitemdw"'
+    azurePowerShellVersion: LatestVersion
+steps:
+- task: AzurePowerShell@4
+  displayName: 'Run ADFv2 pipeline - onpremSQL'
+  inputs:
+    azureSubscription: 'Microsoft Azure Internal Consumption (513a7987-b0d9-4106-a24d-4b3f49136ea8)'
+    ScriptType: InlineScript
+    Inline: 'Invoke-AzDataFactoryV2Pipeline -ResourceGroupName "demo-ignitemdwPROD-rg" -DataFactoryName "demo-ignitemdwPROD-adfv2" -PipelineName "demo30_ignitemdw_onprem"'
+    azurePowerShellVersion: LatestVersion
