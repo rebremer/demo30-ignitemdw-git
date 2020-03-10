@@ -2,7 +2,7 @@
 	"name": "demo30_synapse_table",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "demo30_SQLDW_MI",
+			"referenceName": "demo30_SQLDW",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
