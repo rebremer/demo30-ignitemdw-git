@@ -627,6 +627,37 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-triggerwindow1hour')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "demo30_ignitemdw",
+						"type": "PipelineReference"
+					},
+					"parameters": {}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 60,
+					"startTime": "2020-03-10T08:19:00.000Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-onpremintegrationruntime')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -696,7 +727,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-triggerwindow1hour')]",
+			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-onpremtriggerwindow1hour')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -704,7 +735,7 @@
 				"runtimeState": "Started",
 				"pipeline": {
 					"pipelineReference": {
-						"referenceName": "demo30_ignitemdw",
+						"referenceName": "demo30_ignitemdw_onprem",
 						"type": "PipelineReference"
 					},
 					"parameters": {}
@@ -713,7 +744,7 @@
 				"typeProperties": {
 					"frequency": "Minute",
 					"interval": 60,
-					"startTime": "2020-03-10T08:19:00.000Z",
+					"startTime": "2020-03-10T08:24:00.000Z",
 					"delay": "00:00:00",
 					"maxConcurrency": 50,
 					"retryPolicy": {
@@ -723,7 +754,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw')]"
+				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw_onprem')]"
 			]
 		}
 	]
