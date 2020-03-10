@@ -1,0 +1,173 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "demo-ignitemdw-adfv2"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_ignitemdw')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Demo30 of MS Ignite 34",
+				"activities": [
+					{
+						"name": "HTTP to ADLSgen2",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "movie"
+										},
+										"sink": {
+											"name": "movie",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "title"
+										},
+										"sink": {
+											"name": "title",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "genres"
+										},
+										"sink": {
+											"name": "genres",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "year"
+										},
+										"sink": {
+											"name": "year",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "Rating"
+										},
+										"sink": {
+											"name": "Rating",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "Rotton Tomato"
+										},
+										"sink": {
+											"name": "Rotton Tomato",
+											"type": "Int16"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "demo30_http_csv",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "demo30_adls_csv",
+								"type": "DatasetReference"
+							}
+						]
+					},
+					{
+						"name": "dataflow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "HTTP to ADLSgen2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "demo30_mappingdataflow",
+								"type": "DataFlowReference"
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "demo30_ADLS",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "data/dw-staging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		}
+	]
+}
