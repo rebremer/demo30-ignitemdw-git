@@ -19,7 +19,6 @@ steps:
     csmFile: '$(System.DefaultWorkingDirectory)/ADF_Publish/demo-ignitemdw-adfv2/ARMTemplateForFactory.json'
     csmParametersFile: '$(System.DefaultWorkingDirectory)/ADF_Publish/demo-ignitemdw-adfv2/ARMTemplateParametersForFactory.json'
     overrideParameters: '-factoryName "demo-ignitemdwTEST-adfv2"'
-steps:
 - task: AzureResourceGroupDeployment@2
   displayName: 'Azure Deployment:Create Or Update Resource Group action on demo-ignitemdwPROD-rg'
   inputs:
@@ -29,7 +28,7 @@ steps:
     csmFile: '$(System.DefaultWorkingDirectory)/ADF_Publish/demo-ignitemdw-adfv2/ARMTemplateForFactory.json'
     csmParametersFile: '$(System.DefaultWorkingDirectory)/ADF_Publish/demo-ignitemdw-adfv2/ARMTemplateParametersForFactory.json'
     overrideParameters: '-factoryName "demo-ignitemdwPROD-adfv2"'
-steps:
+
 - task: AzurePowerShell@4
   displayName: 'Run ADFv2 pipeline - standard'
   inputs:
@@ -37,7 +36,7 @@ steps:
     ScriptType: InlineScript
     Inline: 'Invoke-AzDataFactoryV2Pipeline -ResourceGroupName "demo-ignitemdwPROD-rg" -DataFactoryName "demo-ignitemdwPROD-adfv2" -PipelineName "demo30_ignitemdw"'
     azurePowerShellVersion: LatestVersion
-steps:
+
 - task: AzurePowerShell@4
   displayName: 'Run ADFv2 pipeline - onpremSQL'
   inputs:
