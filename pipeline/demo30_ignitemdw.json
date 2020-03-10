@@ -1,7 +1,7 @@
 {
 	"name": "demo30_ignitemdw",
 	"properties": {
-		"description": "Demo30 of MS Ignite 34",
+		"description": "Demo30 of MS Ignite 20:28",
 		"activities": [
 			{
 				"name": "HTTP to ADLSgen2",
@@ -134,9 +134,6 @@
 					"dataflow": {
 						"referenceName": "demo30_mappingdataflow",
 						"type": "DataFlowReference"
-					},
-					"staging": {
-						"folderPath": "data/dw-staging"
 					},
 					"compute": {
 						"coreCount": 8,
