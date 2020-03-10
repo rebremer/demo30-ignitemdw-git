@@ -696,65 +696,42 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-onpremtriggerwindow1day')]",
+			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-trigger1day')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"runtimeState": "Started",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "demo30_ignitemdw_onprem",
-						"type": "PipelineReference"
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "demo30_ignitemdw",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					},
-					"parameters": {}
-				},
-				"type": "TumblingWindowTrigger",
+					{
+						"pipelineReference": {
+							"referenceName": "demo30_ignitemdw_onprem",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
 				"typeProperties": {
-					"frequency": "Hour",
-					"interval": 24,
-					"startTime": "2020-03-10T08:28:00.000Z",
-					"delay": "00:00:00",
-					"maxConcurrency": 50,
-					"retryPolicy": {
-						"intervalInSeconds": 30
-					},
-					"dependsOn": []
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-03-10T08:39:00.000Z",
+						"timeZone": "UTC",
+						"schedule": {}
+					}
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw')]",
 				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw_onprem')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-triggerwindow1day')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "demo30_ignitemdw",
-						"type": "PipelineReference"
-					},
-					"parameters": {}
-				},
-				"type": "TumblingWindowTrigger",
-				"typeProperties": {
-					"frequency": "Hour",
-					"interval": 24,
-					"startTime": "2020-03-10T08:33:00.000Z",
-					"delay": "00:00:00",
-					"maxConcurrency": 50,
-					"retryPolicy": {
-						"intervalInSeconds": 30
-					},
-					"dependsOn": []
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw')]"
 			]
 		}
 	]
