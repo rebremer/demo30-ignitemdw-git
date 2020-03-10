@@ -132,7 +132,7 @@
 					},
 					"staging": {
 						"linkedService": {
-							"referenceName": "demo30_ADLS_MI",
+							"referenceName": "demo30_ADLS",
 							"type": "LinkedServiceReference"
 						},
 						"folderPath": "data/dw-staging"
