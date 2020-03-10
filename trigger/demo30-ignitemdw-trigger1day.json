@@ -9,6 +9,12 @@
 					"referenceName": "demo30_ignitemdw",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "demo30_ignitemdw_onprem",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
