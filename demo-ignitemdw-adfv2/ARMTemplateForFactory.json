@@ -53,7 +53,7 @@
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Demo30 of MS Ignite 22",
+				"description": "Demo30 of MS Ignite 33",
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
@@ -627,6 +627,44 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-trigger1day')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "demo30_ignitemdw",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "demo30_ignitemdw_onprem",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-03-10T08:39:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw')]",
+				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw_onprem')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-onpremintegrationruntime')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -693,45 +731,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/demo30_adls_csv')]",
 				"[concat(variables('factoryId'), '/datasets/demo30_synapse_table')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-trigger1day')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "demo30_ignitemdw",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "demo30_ignitemdw_onprem",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2020-03-10T08:39:00.000Z",
-						"timeZone": "UTC",
-						"schedule": {}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw')]",
-				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw_onprem')]"
 			]
 		}
 	]
