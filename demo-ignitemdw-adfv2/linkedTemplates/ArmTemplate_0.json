@@ -367,7 +367,7 @@
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Demo30 of MS Ignite 34",
+				"description": "Demo30 of MS Ignite 20:28",
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
@@ -508,9 +508,7 @@
 									"sink1": {}
 								}
 							},
-							"staging": {
-								"folderPath": "data/dw-staging"
-							},
+							"staging": {},
 							"compute": {
 								"coreCount": 8,
 								"computeType": "General"
@@ -667,9 +665,7 @@
 									"sink1": {}
 								}
 							},
-							"staging": {
-								"folderPath": "data/dw-staging"
-							},
+							"staging": {},
 							"compute": {
 								"coreCount": 8,
 								"computeType": "General"
