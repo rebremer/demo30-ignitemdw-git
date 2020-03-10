@@ -53,7 +53,7 @@
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Demo30 of MS Ignite 10",
+				"description": "Demo30 of MS Ignite 12",
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
@@ -387,7 +387,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "demo30_ADLS",
+					"referenceName": "demo30_ADLS_MI",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -406,7 +406,7 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS')]"
+				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
 			]
 		},
 		{
@@ -481,7 +481,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "demo30_SQLDW",
+					"referenceName": "demo30_SQLDW_MI",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -493,7 +493,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW')]"
+				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW_MI')]"
 			]
 		},
 		{
