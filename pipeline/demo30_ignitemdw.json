@@ -1,7 +1,7 @@
 {
 	"name": "demo30_ignitemdw",
 	"properties": {
-		"description": "Demo30 of MS Ignite 08:19",
+		"description": "Demo30 of MS Ignite 10:30 CET",
 		"activities": [
 			{
 				"name": "HTTP to ADLSgen2",
