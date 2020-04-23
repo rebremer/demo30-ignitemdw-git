@@ -5,6 +5,7 @@
 		"activities": [
 			{
 				"name": "HTTP to ADLSgen2",
+				"description": "Time changed",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
