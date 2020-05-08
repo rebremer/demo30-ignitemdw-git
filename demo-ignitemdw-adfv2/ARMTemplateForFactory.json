@@ -57,6 +57,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
+						"description": "Time changed",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -215,7 +216,7 @@
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Demo30 of MS Ignite test 14:25",
+				"description": "Demo30 of MS Ignite test 08:13",
 				"activities": [
 					{
 						"name": "OnPremSQL to ADLSgen2",
