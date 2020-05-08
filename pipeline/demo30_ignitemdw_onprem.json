@@ -1,7 +1,7 @@
 {
 	"name": "demo30_ignitemdw_onprem",
 	"properties": {
-		"description": "Demo30 of MS Ignite test 14:25",
+		"description": "Demo30 of MS Ignite test 08:13",
 		"activities": [
 			{
 				"name": "OnPremSQL to ADLSgen2",
@@ -129,9 +129,6 @@
 					"dataflow": {
 						"referenceName": "demo30_mappingdataflow",
 						"type": "DataFlowReference"
-					},
-					"staging": {
-						"folderPath": "data/dw-staging"
 					},
 					"compute": {
 						"coreCount": 8,
