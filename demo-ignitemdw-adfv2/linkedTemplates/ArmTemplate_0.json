@@ -371,7 +371,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
-						"description": "Time changed",
+						"description": "Time changed 10:49 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
