@@ -25,7 +25,7 @@
 		},
 		"demo30_HTTP_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv"
+			"defaultValue": "https://raw.githubusercontent.com/rebremer/demo30-ignitemdw-git/master/moviesDB.csv"
 		},
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -334,6 +334,126 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW_MI')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_ignitemdw_onprem_adlsinkonly')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Demo30 of MS Ignite test 08:13",
+				"activities": [
+					{
+						"name": "OnPremSQL to ADLSgen2",
+						"description": "OnPremSQL to ADLSgen2",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "movie"
+										},
+										"sink": {
+											"name": "movie",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "title"
+										},
+										"sink": {
+											"name": "title",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "genres"
+										},
+										"sink": {
+											"name": "genres",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "year"
+										},
+										"sink": {
+											"name": "year",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "Rating"
+										},
+										"sink": {
+											"name": "Rating",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "Rotton Tomato"
+										},
+										"sink": {
+											"name": "Rotton Tomato",
+											"type": "Int16"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "demo30_onpremsql_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "demo30_adls_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/demo30_onpremsql_table')]",
+				"[concat(variables('factoryId'), '/datasets/demo30_adls_csv')]"
 			]
 		},
 		{

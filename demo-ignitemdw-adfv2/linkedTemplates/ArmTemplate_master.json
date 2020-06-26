@@ -25,7 +25,7 @@
 		},
 		"demo30_HTTP_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv"
+			"defaultValue": "https://raw.githubusercontent.com/rebremer/demo30-ignitemdw-git/master/moviesDB.csv"
 		},
 		"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
