@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "https://raw.githubusercontent.com/microsoft/ignite-learning-paths-training-data/master/data20/demos/moviesDB.csv",
+			"url": "https://raw.githubusercontent.com/rebremer/demo30-ignitemdw-git/master/moviesDB.csv",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
