@@ -1,7 +1,7 @@
 {
 	"name": "demo30_ignitemdw_onprem",
 	"properties": {
-		"description": "Demo30 of MS Ignite test 08:13",
+		"description": "Demo30 of MS Ignite test 13:11",
 		"activities": [
 			{
 				"name": "OnPremSQL to ADLSgen2",
