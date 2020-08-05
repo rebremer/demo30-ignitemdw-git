@@ -220,7 +220,7 @@
 				"activities": [
 					{
 						"name": "OnPremSQL to ADLSgen2",
-						"description": "OnPremSQL to ADLSgen2\n\n15:03 CET",
+						"description": "OnPremSQL to ADLSgen2\n\n14:27 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
