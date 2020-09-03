@@ -57,7 +57,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 15:27 CET",
+						"description": "Time changed 14:21 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -234,7 +234,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlServerSource",
-								"queryTimeout": "02:00:00"
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "DelimitedTextSink",
@@ -391,7 +392,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlServerSource",
-								"queryTimeout": "02:00:00"
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "DelimitedTextSink",
