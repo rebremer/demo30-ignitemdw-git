@@ -1,5 +1,5 @@
 {
-	"name": "DestinationDataset_8ix",
+	"name": "demo_ada_edl_rawarchive_parquet",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "demo30_ADLS_MI",

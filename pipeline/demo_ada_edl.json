@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "SQL onprem tables to parquet",
+				"name": "SQL onprem tables to raw archive",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
@@ -53,7 +53,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SourceDataset_8ix",
+									"referenceName": "demo_ada_edl_sql_table_dynamic",
 									"type": "DatasetReference",
 									"parameters": {
 										"cw_schema": "@item().source.schema",
@@ -63,7 +63,88 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DestinationDataset_8ix",
+									"referenceName": "demo_ada_edl_rawarchive_parquet",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Raw archive to Defined archive",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SQL onprem tables to raw archive",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy table to parquet_copy1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{item().source.schema}.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "dataraw//@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true
+									}
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false
+							},
+							"inputs": [
+								{
+									"referenceName": "demo_ada_edl_rawarchive_parquet",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "demo_ada_edl_definedarchive_parquet",
 									"type": "DatasetReference",
 									"parameters": {
 										"cw_fileName": "@item().destination.fileName"
