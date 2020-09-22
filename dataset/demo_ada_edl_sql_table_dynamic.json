@@ -1,5 +1,5 @@
 {
-	"name": "SourceDataset_8ix",
+	"name": "demo_ada_edl_sql_table_dynamic",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "demo_ada_edl_OnPremSQL",
