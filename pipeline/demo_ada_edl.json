@@ -14,7 +14,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy_8ix",
+							"name": "Copy table to parquet",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
