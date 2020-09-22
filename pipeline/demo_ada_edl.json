@@ -14,7 +14,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy_rwz",
+							"name": "Sql onprem to ADLSgen2 raw",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
