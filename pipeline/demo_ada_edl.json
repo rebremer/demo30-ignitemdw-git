@@ -81,24 +81,6 @@
 				"defaultValue": [
 					{
 						"source": {
-							"schema": "HumanResources",
-							"table": "Employee"
-						},
-						"destination": {
-							"fileName": "HumanResourcesEmployee.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "HumanResources",
-							"table": "EmployeeDepartmentHistory"
-						},
-						"destination": {
-							"fileName": "HumanResourcesEmployeeDepartmentHistory.parquet"
-						}
-					},
-					{
-						"source": {
 							"schema": "Person",
 							"table": "Address"
 						},
