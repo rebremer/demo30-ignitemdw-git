@@ -19,7 +19,7 @@
 					"value": "@dataset().cw_fileName",
 					"type": "Expression"
 				},
-				"fileSystem": "dataraw"
+				"fileSystem": "datadefined"
 			},
 			"compressionCodec": "snappy"
 		},
