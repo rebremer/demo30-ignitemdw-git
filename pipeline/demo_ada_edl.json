@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach copy table parquet",
+				"name": "SQL onprem tables to parquet",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
