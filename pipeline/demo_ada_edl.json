@@ -82,10 +82,10 @@
 					{
 						"source": {
 							"schema": "Person",
-							"table": "Address"
+							"table": "Person"
 						},
 						"destination": {
-							"fileName": "PersonAddress.parquet"
+							"fileName": "PersonPerson.parquet"
 						}
 					},
 					{
