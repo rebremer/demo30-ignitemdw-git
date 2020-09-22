@@ -1,0 +1,20 @@
+{
+	"name": "data_ada_edl_rawparquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "demo30_ADLS_MI",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "movies.parquet",
+				"fileSystem": "dataraw"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
