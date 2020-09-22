@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach_rwz",
+				"name": "ForEach copy table to parquet file",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
