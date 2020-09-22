@@ -1,0 +1,28 @@
+{
+	"name": "demo_ada_edl_definedarchive_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "demo30_ADLS_MI",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cw_fileName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().cw_fileName",
+					"type": "Expression"
+				},
+				"fileSystem": "dataraw"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
