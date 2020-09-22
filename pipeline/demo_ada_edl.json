@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach_8ix",
+				"name": "ForEach copy table parquet",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
