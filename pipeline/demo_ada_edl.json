@@ -90,15 +90,6 @@
 					},
 					{
 						"source": {
-							"schema": "Person",
-							"table": "Person"
-						},
-						"destination": {
-							"fileName": "PersonPerson.parquet"
-						}
-					},
-					{
-						"source": {
 							"schema": "Production",
 							"table": "ProductModel"
 						},
