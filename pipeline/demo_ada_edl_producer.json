@@ -262,6 +262,15 @@
 					{
 						"source": {
 							"schema": "Sales",
+							"table": "SalesOrderHeader"
+						},
+						"destination": {
+							"fileName": "SalesSalesOrderHeader.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
 							"table": "SalesOrderDetail"
 						},
 						"destination": {
