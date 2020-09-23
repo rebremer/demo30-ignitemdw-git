@@ -79,6 +79,15 @@
 					{
 						"source": {
 							"schema": "dbo",
+							"table": "DatabaseLog"
+						},
+						"destination": {
+							"fileName": "dboDatabaseLog.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
 							"table": "ErrorLog"
 						},
 						"destination": {
@@ -101,6 +110,87 @@
 						},
 						"destination": {
 							"fileName": "PersonPersonPhone.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "PhoneNumberType"
+						},
+						"destination": {
+							"fileName": "PersonPhoneNumberType.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "StateProvince"
+						},
+						"destination": {
+							"fileName": "PersonStateProvince.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "Product"
+						},
+						"destination": {
+							"fileName": "ProductionProduct.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "ProductCategory"
+						},
+						"destination": {
+							"fileName": "ProductionProductCategory.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "ProductCostHistory"
+						},
+						"destination": {
+							"fileName": "ProductionProductCostHistory.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "Customer"
+						},
+						"destination": {
+							"fileName": "SalesCustomer.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "PersonCreditCard"
+						},
+						"destination": {
+							"fileName": "SalesPersonCreditCard.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "SalesOrderHeader"
+						},
+						"destination": {
+							"fileName": "SalesSalesOrderHeader.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "SalesOrderDetail"
+						},
+						"destination": {
+							"fileName": "SalesSalesOrderDetail.parquet"
 						}
 					}
 				]
