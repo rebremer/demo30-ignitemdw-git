@@ -60,7 +60,11 @@
 							"outputs": [
 								{
 									"referenceName": "demo_ada_edl_sqldb_table_dynamic",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_schema": "@item().source.schema",
+										"cw_table": "@item().source.table"
+									}
 								}
 							]
 						}
