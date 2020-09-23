@@ -162,6 +162,42 @@
 				"defaultValue": [
 					{
 						"source": {
+							"schema": "dbo",
+							"table": "AWBuildVersion"
+						},
+						"destination": {
+							"fileName": "dboAWBuildVersion.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "DatabaseLog"
+						},
+						"destination": {
+							"fileName": "dboDatabaseLog.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "ErrorLog"
+						},
+						"destination": {
+							"fileName": "dboErrorLog.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "moviesSSIS"
+						},
+						"destination": {
+							"fileName": "dbomoviesSSIS.parquet"
+						}
+					},
+					{
+						"source": {
 							"schema": "Person",
 							"table": "Person"
 						},
@@ -171,11 +207,110 @@
 					},
 					{
 						"source": {
-							"schema": "Production",
-							"table": "ProductModel"
+							"schema": "Person",
+							"table": "PersonPhone"
 						},
 						"destination": {
-							"fileName": "ProductionProductModel.parquet"
+							"fileName": "PersonPersonPhone.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "PhoneNumberType"
+						},
+						"destination": {
+							"fileName": "PersonPhoneNumberType.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "StateProvince"
+						},
+						"destination": {
+							"fileName": "PersonStateProvince.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "BillOfMaterials"
+						},
+						"destination": {
+							"fileName": "ProductionBillOfMaterials.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "Culture"
+						},
+						"destination": {
+							"fileName": "ProductionCulture.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "Document"
+						},
+						"destination": {
+							"fileName": "ProductionDocument.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "Product"
+						},
+						"destination": {
+							"fileName": "ProductionProduct.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "ProductCategory"
+						},
+						"destination": {
+							"fileName": "ProductionProductCategory.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "ProductCostHistory"
+						},
+						"destination": {
+							"fileName": "ProductionProductCostHistory.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "Customer"
+						},
+						"destination": {
+							"fileName": "SalesCustomer.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "PersonCreditCard"
+						},
+						"destination": {
+							"fileName": "SalesPersonCreditCard.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "SalesOrderDetail"
+						},
+						"destination": {
+							"fileName": "SalesSalesOrderDetail.parquet"
 						}
 					}
 				]
