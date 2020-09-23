@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "Stage defined Archive to Information Factory",
+				"description": "[{\"source\":{\"schema\":\"dbo\",\"table\":\"DatabaseLog\"},\"destination\":{\"fileName\":\"dboDatabaseLog.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ErrorLog\"},\"destination\":{\"fileName\":\"dboErrorLog.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Person\"},\"destination\":{\"fileName\":\"PersonPerson.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PersonPhone\"},\"destination\":{\"fileName\":\"PersonPersonPhone.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PhoneNumberType\"},\"destination\":{\"fileName\":\"PersonPhoneNumberType.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"StateProvince\"},\"destination\":{\"fileName\":\"PersonStateProvince.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Product\"},\"destination\":{\"fileName\":\"ProductionProduct.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ProductCategory\"},\"destination\":{\"fileName\":\"ProductionProductCategory.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ProductCostHistory\"},\"destination\":{\"fileName\":\"ProductionProductCostHistory.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Customer\"},\"destination\":{\"fileName\":\"SalesCustomer.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PersonCreditCard\"},\"destination\":{\"fileName\":\"SalesPersonCreditCard.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"SalesOrderHeader\"},\"destination\":{\"fileName\":\"SalesSalesOrderHeader.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"SalesOrderDetail\"},\"destination\":{\"fileName\":\"SalesSalesOrderDetail.parquet\"}}]",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
@@ -91,7 +92,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[uspLogError]"
+					"storedProcedureName": "[dbo].[TruncateTable]",
+					"storedProcedureParameters": {
+						"databaseName": {
+							"value": "",
+							"type": "String"
+						}
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "demo_ada_edl_SQLDB",
@@ -106,118 +113,10 @@
 					{
 						"source": {
 							"schema": "dbo",
-							"table": "DatabaseLog"
-						},
-						"destination": {
-							"fileName": "dboDatabaseLog.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "ErrorLog"
-						},
-						"destination": {
-							"fileName": "dboErrorLog.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
 							"table": "Person"
 						},
 						"destination": {
 							"fileName": "PersonPerson.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "PersonPhone"
-						},
-						"destination": {
-							"fileName": "PersonPersonPhone.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "PhoneNumberType"
-						},
-						"destination": {
-							"fileName": "PersonPhoneNumberType.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "StateProvince"
-						},
-						"destination": {
-							"fileName": "PersonStateProvince.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "Product"
-						},
-						"destination": {
-							"fileName": "ProductionProduct.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "ProductCategory"
-						},
-						"destination": {
-							"fileName": "ProductionProductCategory.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "ProductCostHistory"
-						},
-						"destination": {
-							"fileName": "ProductionProductCostHistory.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "Customer"
-						},
-						"destination": {
-							"fileName": "SalesCustomer.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "PersonCreditCard"
-						},
-						"destination": {
-							"fileName": "SalesPersonCreditCard.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "SalesOrderHeader"
-						},
-						"destination": {
-							"fileName": "SalesSalesOrderHeader.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
-							"table": "SalesOrderDetail"
-						},
-						"destination": {
-							"fileName": "SalesSalesOrderDetail.parquet"
 						}
 					}
 				]
