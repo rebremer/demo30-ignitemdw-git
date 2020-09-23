@@ -189,15 +189,6 @@
 					},
 					{
 						"source": {
-							"schema": "dbo",
-							"table": "moviesSSIS"
-						},
-						"destination": {
-							"fileName": "dbomoviesSSIS.parquet"
-						}
-					},
-					{
-						"source": {
 							"schema": "Person",
 							"table": "Person"
 						},
