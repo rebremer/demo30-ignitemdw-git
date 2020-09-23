@@ -180,42 +180,6 @@
 					},
 					{
 						"source": {
-							"schema": "Person",
-							"table": "Person"
-						},
-						"destination": {
-							"fileName": "PersonPerson.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Person",
-							"table": "PersonPhone"
-						},
-						"destination": {
-							"fileName": "PersonPersonPhone.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Person",
-							"table": "PhoneNumberType"
-						},
-						"destination": {
-							"fileName": "PersonPhoneNumberType.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Person",
-							"table": "StateProvince"
-						},
-						"destination": {
-							"fileName": "PersonStateProvince.parquet"
-						}
-					},
-					{
-						"source": {
 							"schema": "Production",
 							"table": "BillOfMaterials"
 						},
