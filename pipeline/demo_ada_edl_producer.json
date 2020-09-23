@@ -217,33 +217,6 @@
 					{
 						"source": {
 							"schema": "Production",
-							"table": "BillOfMaterials"
-						},
-						"destination": {
-							"fileName": "ProductionBillOfMaterials.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Production",
-							"table": "Culture"
-						},
-						"destination": {
-							"fileName": "ProductionCulture.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Production",
-							"table": "Document"
-						},
-						"destination": {
-							"fileName": "ProductionDocument.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Production",
 							"table": "Product"
 						},
 						"destination": {
@@ -266,6 +239,33 @@
 						},
 						"destination": {
 							"fileName": "ProductionProductCostHistory.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "Customer"
+						},
+						"destination": {
+							"fileName": "SalesCustomer.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "PersonCreditCard"
+						},
+						"destination": {
+							"fileName": "SalesPersonCreditCard.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "SalesOrderDetail"
+						},
+						"destination": {
+							"fileName": "SalesSalesOrderDetail.parquet"
 						}
 					}
 				]
