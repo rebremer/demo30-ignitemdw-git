@@ -43,13 +43,7 @@
 									}
 								},
 								"sink": {
-									"type": "ParquetSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "ParquetWriteSettings"
-									}
+									"type": "AzureSqlSink"
 								},
 								"enableStaging": false,
 								"validateDataConsistency": false
@@ -65,11 +59,8 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "demo_ada_edl_rawarchive_parquet",
-									"type": "DatasetReference",
-									"parameters": {
-										"cw_fileName": "@item().destination.fileName"
-									}
+									"referenceName": "demo_ada_edl_sqldb_table_dynamic",
+									"type": "DatasetReference"
 								}
 							]
 						}
