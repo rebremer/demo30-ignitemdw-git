@@ -163,15 +163,6 @@
 					{
 						"source": {
 							"schema": "dbo",
-							"table": "AWBuildVersion"
-						},
-						"destination": {
-							"fileName": "dboAWBuildVersion.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "dbo",
 							"table": "DatabaseLog"
 						},
 						"destination": {
