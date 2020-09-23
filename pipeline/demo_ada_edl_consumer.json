@@ -95,7 +95,11 @@
 					"storedProcedureName": "[dbo].[TruncateTable]",
 					"storedProcedureParameters": {
 						"databaseName": {
-							"value": "",
+							"value": "demo-informationfactory-db",
+							"type": "String"
+						},
+						"tableName": {
+							"value": "Person",
 							"type": "String"
 						}
 					}
