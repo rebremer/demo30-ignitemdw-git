@@ -1,0 +1,240 @@
+{
+	"name": "CopyPipeline_wx6",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach_wx6",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy_wx6",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{item().source.schema}.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "datadefinedarchive//@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SourceDataset_wx6",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_schema": "@item().source.schema",
+										"cw_table": "@item().source.table"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DestinationDataset_wx6",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"cw_items": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "AWBuildVersion"
+						},
+						"destination": {
+							"fileName": "dboAWBuildVersion.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "DatabaseLog"
+						},
+						"destination": {
+							"fileName": "dboDatabaseLog.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "ErrorLog"
+						},
+						"destination": {
+							"fileName": "dboErrorLog.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "moviesSSIS"
+						},
+						"destination": {
+							"fileName": "dbomoviesSSIS.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "Person"
+						},
+						"destination": {
+							"fileName": "PersonPerson.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "PersonPhone"
+						},
+						"destination": {
+							"fileName": "PersonPersonPhone.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "PhoneNumberType"
+						},
+						"destination": {
+							"fileName": "PersonPhoneNumberType.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "StateProvince"
+						},
+						"destination": {
+							"fileName": "PersonStateProvince.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "BillOfMaterials"
+						},
+						"destination": {
+							"fileName": "ProductionBillOfMaterials.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "Culture"
+						},
+						"destination": {
+							"fileName": "ProductionCulture.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "Document"
+						},
+						"destination": {
+							"fileName": "ProductionDocument.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "Product"
+						},
+						"destination": {
+							"fileName": "ProductionProduct.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "ProductCategory"
+						},
+						"destination": {
+							"fileName": "ProductionProductCategory.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "ProductCostHistory"
+						},
+						"destination": {
+							"fileName": "ProductionProductCostHistory.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "Customer"
+						},
+						"destination": {
+							"fileName": "SalesCustomer.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "PersonCreditCard"
+						},
+						"destination": {
+							"fileName": "SalesPersonCreditCard.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "SalesOrderDetail"
+						},
+						"destination": {
+							"fileName": "SalesSalesOrderDetail.parquet"
+						}
+					}
+				]
+			}
+		},
+		"annotations": []
+	}
+}
