@@ -1,0 +1,20 @@
+{
+	"name": "demo_ada_edl_sqldb_table_dynamic",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "demo_ada_edl_SQLDB",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cw_schema": {
+				"type": "string"
+			},
+			"cw_table": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
