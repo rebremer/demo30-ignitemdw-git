@@ -73,11 +73,11 @@
 				}
 			},
 			{
-				"name": "Staging to serve",
+				"name": "Truncate staging",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Stage defined Archive to Information Factory",
+						"activity": "Execute scripts on staging",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -103,6 +103,33 @@
 							"type": "String"
 						}
 					}
+				},
+				"linkedServiceName": {
+					"referenceName": "demo_ada_edl_SQLDB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Execute scripts on staging",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Stage defined Archive to Information Factory",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[uspLogError]"
 				},
 				"linkedServiceName": {
 					"referenceName": "demo_ada_edl_SQLDB",
