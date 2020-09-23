@@ -36,8 +36,11 @@
 							],
 							"typeProperties": {
 								"source": {
-									"type": "SqlServerSource",
-									"partitionOption": "None"
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true
+									}
 								},
 								"sink": {
 									"type": "ParquetSink",
@@ -53,11 +56,10 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "demo_ada_edl_sql_table_dynamic",
+									"referenceName": "demo_ada_edl_definedarchive_parquet",
 									"type": "DatasetReference",
 									"parameters": {
-										"cw_schema": "@item().source.schema",
-										"cw_table": "@item().source.table"
+										"cw_fileName": "@item().destination.fileName"
 									}
 								}
 							],
