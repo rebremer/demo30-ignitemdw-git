@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Defined Archive to Information Factory",
+				"name": "Stage defined Archive to Information Factory",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
