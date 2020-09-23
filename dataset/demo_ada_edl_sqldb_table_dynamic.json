@@ -1,0 +1,30 @@
+{
+	"name": "demo_ada_edl_sqldb_table_dynamic",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "demo_ada_edl_OnPremSQL",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cw_schema": {
+				"type": "String"
+			},
+			"cw_table": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().cw_schema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().cw_table",
+				"type": "Expression"
+			}
+		}
+	}
+}
