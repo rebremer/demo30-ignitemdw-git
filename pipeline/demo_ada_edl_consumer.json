@@ -99,7 +99,7 @@
 							"type": "String"
 						},
 						"tableName": {
-							"value": "'Person'",
+							"value": "Person",
 							"type": "String"
 						}
 					}
