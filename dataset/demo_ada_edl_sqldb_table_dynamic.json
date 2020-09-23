@@ -15,6 +15,10 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "@dataset().cw_schema",
+			"table": "@dataset().cw_table"
+		}
 	}
 }
