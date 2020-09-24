@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'demo30_ADLS'"
 		},
+		"demo_ada_edl_SQLDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'demo_ada_edl_SQLDB'"
+		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -38,6 +42,10 @@
 		"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "synapseconnectionstring"
+		},
+		"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "onpremadventureworks"
 		},
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -73,6 +81,9 @@
 					"demo30_ADLS_accountKey": {
 						"value": "[parameters('demo30_ADLS_accountKey')]"
 					},
+					"demo_ada_edl_SQLDB_connectionString": {
+						"value": "[parameters('demo_ada_edl_SQLDB_connectionString')]"
+					},
 					"demo30_ADLS_properties_typeProperties_url": {
 						"value": "[parameters('demo30_ADLS_properties_typeProperties_url')]"
 					},
@@ -96,10 +107,33 @@
 					},
 					"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
+					},
+					"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "demo-ignitemdw-adfv2_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'demo-ignitemdw-adfv2_ArmTemplate_0')]"
+			]
 		}
 	]
 }
