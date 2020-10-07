@@ -1,0 +1,30 @@
+{
+	"name": "demo_databricks_cosmos_sql_table_dynamic_copy1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "demo30_OnPremSQL",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cw_schema": {
+				"type": "String"
+			},
+			"cw_table": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().cw_schema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().cw_table",
+				"type": "Expression"
+			}
+		}
+	}
+}
