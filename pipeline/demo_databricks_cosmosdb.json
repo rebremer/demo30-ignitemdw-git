@@ -1,0 +1,204 @@
+{
+	"name": "demo_databricks_cosmosdb",
+	"properties": {
+		"activities": [
+			{
+				"name": "SQL onprem tables to ADLSgen2",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy table to parquet",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{item().source.schema}.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "dataraw//@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false
+							},
+							"inputs": [
+								{
+									"referenceName": "demo_databricks_cosmos_sql_table_dynamic",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_schema": "@item().source.schema",
+										"cw_table": "@item().source.table"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "demo_ada_edl_rawarchive_parquet",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"cw_items": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "DatabaseLog"
+						},
+						"destination": {
+							"fileName": "dboDatabaseLog.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "dbo",
+							"table": "ErrorLog"
+						},
+						"destination": {
+							"fileName": "dboErrorLog.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "Person"
+						},
+						"destination": {
+							"fileName": "PersonPerson.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "PersonPhone"
+						},
+						"destination": {
+							"fileName": "PersonPersonPhone.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "PhoneNumberType"
+						},
+						"destination": {
+							"fileName": "PersonPhoneNumberType.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Person",
+							"table": "StateProvince"
+						},
+						"destination": {
+							"fileName": "PersonStateProvince.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "Product"
+						},
+						"destination": {
+							"fileName": "ProductionProduct.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "ProductCategory"
+						},
+						"destination": {
+							"fileName": "ProductionProductCategory.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Production",
+							"table": "ProductCostHistory"
+						},
+						"destination": {
+							"fileName": "ProductionProductCostHistory.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "Customer"
+						},
+						"destination": {
+							"fileName": "SalesCustomer.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "PersonCreditCard"
+						},
+						"destination": {
+							"fileName": "SalesPersonCreditCard.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "SalesOrderHeader"
+						},
+						"destination": {
+							"fileName": "SalesSalesOrderHeader.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Sales",
+							"table": "SalesOrderDetail"
+						},
+						"destination": {
+							"fileName": "SalesSalesOrderDetail.parquet"
+						}
+					}
+				]
+			}
+		},
+		"annotations": []
+	}
+}
