@@ -1,5 +1,5 @@
 {
-	"name": "demo_databricks_cosmos_sql_table_dynamic_copy1",
+	"name": "demo_databricks_cosmos_sql_table_dynamic",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "demo30_OnPremSQL",
