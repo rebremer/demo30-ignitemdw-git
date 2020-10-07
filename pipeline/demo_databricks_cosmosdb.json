@@ -82,118 +82,19 @@
 					{
 						"source": {
 							"schema": "dbo",
-							"table": "DatabaseLog"
+							"table": "person"
 						},
 						"destination": {
-							"fileName": "dboDatabaseLog.parquet"
+							"fileName": "dboPerson.parquet"
 						}
 					},
 					{
 						"source": {
 							"schema": "dbo",
-							"table": "ErrorLog"
+							"table": "relation"
 						},
 						"destination": {
-							"fileName": "dboErrorLog.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Person",
-							"table": "Person"
-						},
-						"destination": {
-							"fileName": "PersonPerson.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Person",
-							"table": "PersonPhone"
-						},
-						"destination": {
-							"fileName": "PersonPersonPhone.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Person",
-							"table": "PhoneNumberType"
-						},
-						"destination": {
-							"fileName": "PersonPhoneNumberType.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Person",
-							"table": "StateProvince"
-						},
-						"destination": {
-							"fileName": "PersonStateProvince.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Production",
-							"table": "Product"
-						},
-						"destination": {
-							"fileName": "ProductionProduct.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Production",
-							"table": "ProductCategory"
-						},
-						"destination": {
-							"fileName": "ProductionProductCategory.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Production",
-							"table": "ProductCostHistory"
-						},
-						"destination": {
-							"fileName": "ProductionProductCostHistory.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Sales",
-							"table": "Customer"
-						},
-						"destination": {
-							"fileName": "SalesCustomer.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Sales",
-							"table": "PersonCreditCard"
-						},
-						"destination": {
-							"fileName": "SalesPersonCreditCard.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Sales",
-							"table": "SalesOrderHeader"
-						},
-						"destination": {
-							"fileName": "SalesSalesOrderHeader.parquet"
-						}
-					},
-					{
-						"source": {
-							"schema": "Sales",
-							"table": "SalesOrderDetail"
-						},
-						"destination": {
-							"fileName": "SalesSalesOrderDetail.parquet"
+							"fileName": "dboRelation.parquet"
 						}
 					}
 				]
