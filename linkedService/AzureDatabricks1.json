@@ -14,6 +14,10 @@
 				"secretName": "pattoken"
 			},
 			"existingClusterId": "1008-130004-word26"
+		},
+		"connectVia": {
+			"referenceName": "VNETintegration",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
