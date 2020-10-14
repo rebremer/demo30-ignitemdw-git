@@ -14,10 +14,6 @@
 				"secretName": "pattoken"
 			},
 			"existingClusterId": "1008-130004-word26"
-		},
-		"connectVia": {
-			"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
-			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
