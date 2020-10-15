@@ -6,12 +6,229 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "demo-ignitemdw-adfv2"
+		},
+		"AzureKeyVault1_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/blog-metadata-shir/providers/Microsoft.KeyVault/vaults/demo-ignitemdw-akv"
+		},
+		"AzureKeyVault1_properties_groupId": {
+			"type": "string",
+			"defaultValue": "vault"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/default/AzureKeyVault1')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('AzureKeyVault1_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('AzureKeyVault1_properties_groupId')]"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_consumer')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Stage defined Archive to Information Factory",
+						"description": "[[{\"source\":{\"schema\":\"dbo\",\"table\":\"DatabaseLog\"},\"destination\":{\"fileName\":\"dboDatabaseLog.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ErrorLog\"},\"destination\":{\"fileName\":\"dboErrorLog.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Person\"},\"destination\":{\"fileName\":\"PersonPerson.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PersonPhone\"},\"destination\":{\"fileName\":\"PersonPersonPhone.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PhoneNumberType\"},\"destination\":{\"fileName\":\"PersonPhoneNumberType.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"StateProvince\"},\"destination\":{\"fileName\":\"PersonStateProvince.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Product\"},\"destination\":{\"fileName\":\"ProductionProduct.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ProductCategory\"},\"destination\":{\"fileName\":\"ProductionProductCategory.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ProductCostHistory\"},\"destination\":{\"fileName\":\"ProductionProductCostHistory.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Customer\"},\"destination\":{\"fileName\":\"SalesCustomer.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PersonCreditCard\"},\"destination\":{\"fileName\":\"SalesPersonCreditCard.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"SalesOrderHeader\"},\"destination\":{\"fileName\":\"SalesSalesOrderHeader.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"SalesOrderDetail\"},\"destination\":{\"fileName\":\"SalesSalesOrderDetail.parquet\"}}]",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.cw_items",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy parquet to table",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "Source",
+											"value": "@{item().source.schema}.@{item().source.table}"
+										},
+										{
+											"name": "Destination",
+											"value": "dataraw//@{item().destination.fileName}"
+										}
+									],
+									"typeProperties": {
+										"source": {
+											"type": "ParquetSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true
+											}
+										},
+										"sink": {
+											"type": "AzureSqlSink"
+										},
+										"enableStaging": false,
+										"validateDataConsistency": false
+									},
+									"inputs": [
+										{
+											"referenceName": "demo_ada_edl_definedarchive_parquet",
+											"type": "DatasetReference",
+											"parameters": {
+												"cw_fileName": "@item().destination.fileName"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "demo_ada_edl_sqldb_table_dynamic",
+											"type": "DatasetReference",
+											"parameters": {
+												"cw_schema": "@item().source.schema",
+												"cw_table": "@item().source.table"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Truncate staging",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Execute scripts on staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[TruncateTable]",
+							"storedProcedureParameters": {
+								"databaseName": {
+									"value": "demo-informationfactory-db",
+									"type": "String"
+								},
+								"tableName": {
+									"value": "Person",
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "demo_ada_edl_SQLDB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Execute scripts on staging",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Stage defined Archive to Information Factory",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[uspLogError]"
+						},
+						"linkedServiceName": {
+							"referenceName": "demo_ada_edl_SQLDB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"parameters": {
+					"cw_items": {
+						"type": "Array",
+						"defaultValue": [
+							{
+								"source": {
+									"schema": "dbo",
+									"table": "Person"
+								},
+								"destination": {
+									"fileName": "PersonPerson.parquet"
+								}
+							}
+						]
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_onpremsql_table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo30_OnPremSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "movies"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_synapse_table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo30_SQLDW_MI",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Ratings"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_sql_table_dynamic')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -194,7 +411,9 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/demo30_onpremsql_table')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_producer')]",
@@ -671,7 +890,9 @@
 					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> adlssource\nadlssource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotten Tomato} = {Rotton Tomato},\n\t\teach(match(position==1),\n\t\t\t$$+'short' = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 filter(toInteger(year) > 1950) ~> Filter1\nFilter1 derive(PrimaryGenre = iif( locate('|',genres) > 1, left(genres, locate('|',genres)-1), genres)) ~> DerivedColumn1\nDerivedColumn1 window(over(PrimaryGenre,\n\t\tyear),\n\tdesc({Rotten Tomato}, true),\n\tRatingsRank = rank()) ~> RankMovingsByRate\nRankMovingsByRate aggregate(groupBy(PrimaryGenre,\n\t\tyear),\n\tAverageRating = avg(toInteger({Rotten Tomato})),\n\t\tHighestRated = first(title),\n\t\tLowestRated = last(title),\n\t\tNumberOfMovies = count()) ~> AggregateRatings\nAggregateRatings alterRow(upsertIf(true())) ~> UpsertIfTrue\nUpsertIfTrue sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:['PrimaryGenre','year'],\n\tformat: 'table',\n\tstaged: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/demo30_synapse_table')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30_ignitemdw')]",
@@ -682,7 +903,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 09:45 CET",
+						"description": "Time changed 14:55 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -987,6 +1208,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/demo30_onpremsql_table')]",
 				"[concat(variables('factoryId'), '/dataflows/demo30_mappingdataflow')]"
 			]
 		},

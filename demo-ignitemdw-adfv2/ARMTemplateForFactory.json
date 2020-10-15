@@ -50,6 +50,14 @@
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourcegroups/blog-metadata-rg/providers/Microsoft.DataFactory/factories/blog-metadata-adf/integrationruntimes/shir"
+		},
+		"AzureKeyVault1_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/blog-metadata-shir/providers/Microsoft.KeyVault/vaults/demo-ignitemdw-akv"
+		},
+		"AzureKeyVault1_properties_groupId": {
+			"type": "string",
+			"defaultValue": "vault"
 		}
 	},
 	"variables": {
@@ -65,7 +73,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 09:45 CET",
+						"description": "Time changed 14:55 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1415,7 +1423,7 @@
 				"annotations": [],
 				"type": "AzureDatabricks",
 				"typeProperties": {
-					"domain": "https://adb-427767363911698.18.azuredatabricks.net",
+					"domain": "https://adb-6058854188253685.5.azuredatabricks.net/",
 					"accessToken": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
@@ -1424,7 +1432,7 @@
 						},
 						"secretName": "pattoken"
 					},
-					"existingClusterId": "1008-094531-chits540"
+					"existingClusterId": "1008-130004-word26"
 				}
 			},
 			"dependsOn": [
@@ -1640,6 +1648,56 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ManagedVNET')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "East US",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ManagedVNET2')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "East US",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-onpremintegrationruntime')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -1706,6 +1764,25 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/demo30_adls_csv')]",
 				"[concat(variables('factoryId'), '/datasets/demo30_synapse_table')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default/AzureKeyVault1')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('AzureKeyVault1_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('AzureKeyVault1_properties_groupId')]"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
 			]
 		}
 	]
