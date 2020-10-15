@@ -73,7 +73,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 14:55 CET",
+						"description": "Time changed 15:29 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1645,56 +1645,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw')]",
 				"[concat(variables('factoryId'), '/pipelines/demo30_ignitemdw_onprem')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ManagedVNET')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "Managed",
-				"typeProperties": {
-					"computeProperties": {
-						"location": "East US",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 8,
-							"timeToLive": 0
-						}
-					}
-				},
-				"managedVirtualNetwork": {
-					"type": "ManagedVirtualNetworkReference",
-					"referenceName": "default"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ManagedVNET2')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "Managed",
-				"typeProperties": {
-					"computeProperties": {
-						"location": "East US",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 8,
-							"timeToLive": 0
-						}
-					}
-				},
-				"managedVirtualNetwork": {
-					"type": "ManagedVirtualNetworkReference",
-					"referenceName": "default"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
 			]
 		},
 		{

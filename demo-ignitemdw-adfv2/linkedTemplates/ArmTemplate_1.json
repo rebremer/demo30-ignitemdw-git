@@ -6,191 +6,12 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "demo-ignitemdw-adfv2"
-		},
-		"AzureKeyVault1_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/blog-metadata-shir/providers/Microsoft.KeyVault/vaults/demo-ignitemdw-akv"
-		},
-		"AzureKeyVault1_properties_groupId": {
-			"type": "string",
-			"defaultValue": "vault"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/default/AzureKeyVault1')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('AzureKeyVault1_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('AzureKeyVault1_properties_groupId')]"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_consumer')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Stage defined Archive to Information Factory",
-						"description": "[[{\"source\":{\"schema\":\"dbo\",\"table\":\"DatabaseLog\"},\"destination\":{\"fileName\":\"dboDatabaseLog.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ErrorLog\"},\"destination\":{\"fileName\":\"dboErrorLog.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Person\"},\"destination\":{\"fileName\":\"PersonPerson.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PersonPhone\"},\"destination\":{\"fileName\":\"PersonPersonPhone.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PhoneNumberType\"},\"destination\":{\"fileName\":\"PersonPhoneNumberType.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"StateProvince\"},\"destination\":{\"fileName\":\"PersonStateProvince.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Product\"},\"destination\":{\"fileName\":\"ProductionProduct.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ProductCategory\"},\"destination\":{\"fileName\":\"ProductionProductCategory.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ProductCostHistory\"},\"destination\":{\"fileName\":\"ProductionProductCostHistory.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Customer\"},\"destination\":{\"fileName\":\"SalesCustomer.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PersonCreditCard\"},\"destination\":{\"fileName\":\"SalesPersonCreditCard.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"SalesOrderHeader\"},\"destination\":{\"fileName\":\"SalesSalesOrderHeader.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"SalesOrderDetail\"},\"destination\":{\"fileName\":\"SalesSalesOrderDetail.parquet\"}}]",
-						"type": "ForEach",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@pipeline().parameters.cw_items",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Copy parquet to table",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [
-										{
-											"name": "Source",
-											"value": "@{item().source.schema}.@{item().source.table}"
-										},
-										{
-											"name": "Destination",
-											"value": "dataraw//@{item().destination.fileName}"
-										}
-									],
-									"typeProperties": {
-										"source": {
-											"type": "ParquetSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true
-											}
-										},
-										"sink": {
-											"type": "AzureSqlSink"
-										},
-										"enableStaging": false,
-										"validateDataConsistency": false
-									},
-									"inputs": [
-										{
-											"referenceName": "demo_ada_edl_definedarchive_parquet",
-											"type": "DatasetReference",
-											"parameters": {
-												"cw_fileName": "@item().destination.fileName"
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "demo_ada_edl_sqldb_table_dynamic",
-											"type": "DatasetReference",
-											"parameters": {
-												"cw_schema": "@item().source.schema",
-												"cw_table": "@item().source.table"
-											}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "Truncate staging",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Execute scripts on staging",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[TruncateTable]",
-							"storedProcedureParameters": {
-								"databaseName": {
-									"value": "demo-informationfactory-db",
-									"type": "String"
-								},
-								"tableName": {
-									"value": "Person",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "demo_ada_edl_SQLDB",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Execute scripts on staging",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Stage defined Archive to Information Factory",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[uspLogError]"
-						},
-						"linkedServiceName": {
-							"referenceName": "demo_ada_edl_SQLDB",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"parameters": {
-					"cw_items": {
-						"type": "Array",
-						"defaultValue": [
-							{
-								"source": {
-									"schema": "dbo",
-									"table": "Person"
-								},
-								"destination": {
-									"fileName": "PersonPerson.parquet"
-								}
-							}
-						]
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30_onpremsql_table')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -903,7 +724,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 14:55 CET",
+						"description": "Time changed 15:29 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {

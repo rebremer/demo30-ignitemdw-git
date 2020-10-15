@@ -118,6 +118,12 @@
 					},
 					"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
+					},
+					"AzureKeyVault1_properties_privateLinkResourceId": {
+						"value": "[parameters('AzureKeyVault1_properties_privateLinkResourceId')]"
+					},
+					"AzureKeyVault1_properties_groupId": {
+						"value": "[parameters('AzureKeyVault1_properties_groupId')]"
 					}
 				}
 			},
@@ -136,12 +142,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"AzureKeyVault1_properties_privateLinkResourceId": {
-						"value": "[parameters('AzureKeyVault1_properties_privateLinkResourceId')]"
-					},
-					"AzureKeyVault1_properties_groupId": {
-						"value": "[parameters('AzureKeyVault1_properties_groupId')]"
 					}
 				}
 			},
