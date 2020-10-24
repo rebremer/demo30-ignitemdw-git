@@ -136,9 +136,9 @@
 						"referenceName": "demo30_mappingdataflow_SQLDB",
 						"type": "DataFlowReference"
 					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
+					"integrationRuntime": {
+						"referenceName": "ManagedVNET",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}
