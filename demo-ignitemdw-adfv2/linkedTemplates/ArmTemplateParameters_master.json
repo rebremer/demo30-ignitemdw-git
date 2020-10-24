@@ -11,6 +11,9 @@
 		"demo_ada_edl_SQLDB_connectionString": {
 			"value": ""
 		},
+		"demo_vnetdataflows_SQLDB_connectionString": {
+			"value": ""
+		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"value": "https://demoignitemdwstor.dfs.core.windows.net"
 		},
@@ -43,6 +46,12 @@
 		},
 		"AzureKeyVault1_properties_groupId": {
 			"value": "vault"
+		},
+		"SQLDB_private_endpoin_properties_privateLinkResourceId": {
+			"value": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/test-edlprod1-rg/providers/Microsoft.Sql/servers/test-edlprod1-dbs"
+		},
+		"SQLDB_private_endpoin_properties_groupId": {
+			"value": "sqlServer"
 		},
 		"containerUri": {
 			"value": ""

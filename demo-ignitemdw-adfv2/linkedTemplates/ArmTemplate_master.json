@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_ada_edl_SQLDB'"
 		},
+		"demo_vnetdataflows_SQLDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'demo_vnetdataflows_SQLDB'"
+		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -58,6 +62,14 @@
 		"AzureKeyVault1_properties_groupId": {
 			"type": "string",
 			"defaultValue": "vault"
+		},
+		"SQLDB_private_endpoin_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/test-edlprod1-rg/providers/Microsoft.Sql/servers/test-edlprod1-dbs"
+		},
+		"SQLDB_private_endpoin_properties_groupId": {
+			"type": "string",
+			"defaultValue": "sqlServer"
 		},
 		"containerUri": {
 			"type": "string",
@@ -142,6 +154,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"demo_vnetdataflows_SQLDB_connectionString": {
+						"value": "[parameters('demo_vnetdataflows_SQLDB_connectionString')]"
+					},
+					"SQLDB_private_endpoin_properties_privateLinkResourceId": {
+						"value": "[parameters('SQLDB_private_endpoin_properties_privateLinkResourceId')]"
+					},
+					"SQLDB_private_endpoin_properties_groupId": {
+						"value": "[parameters('SQLDB_private_endpoin_properties_groupId')]"
 					}
 				}
 			},
