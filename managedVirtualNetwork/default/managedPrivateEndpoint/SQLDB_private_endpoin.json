@@ -1,0 +1,7 @@
+{
+	"name": "SQLDB_private_endpoin",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/test-edlprod1-rg/providers/Microsoft.Sql/servers/test-edlprod1-dbs",
+		"groupId": "sqlServer"
+	}
+}
