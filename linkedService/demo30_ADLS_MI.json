@@ -5,6 +5,10 @@
 		"type": "AzureBlobFS",
 		"typeProperties": {
 			"url": "https://demoignitemdwstor.dfs.core.windows.net"
+		},
+		"connectVia": {
+			"referenceName": "ManagedVNET",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
