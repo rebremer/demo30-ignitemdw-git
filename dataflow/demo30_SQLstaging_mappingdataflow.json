@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "demo_vnetdataflows_SQLDBtable",
+						"referenceName": "demo_staging_vnetdataflows_SQLDBtable",
 						"type": "DatasetReference"
 					},
 					"name": "SQLDBstaging"
