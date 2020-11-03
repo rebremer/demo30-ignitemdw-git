@@ -1,0 +1,144 @@
+{
+	"name": "demo_onprem_vnetdataflows_sqldb",
+	"properties": {
+		"description": "Demo30 of MS Ignite 21:41 CET",
+		"activities": [
+			{
+				"name": "on prem SQL to ADLSgen2",
+				"description": "Time changed 16:30 CET",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "movie"
+								},
+								"sink": {
+									"name": "movie",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "title"
+								},
+								"sink": {
+									"name": "title",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "genres"
+								},
+								"sink": {
+									"name": "genres",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "year"
+								},
+								"sink": {
+									"name": "year",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"name": "Rating"
+								},
+								"sink": {
+									"name": "Rating",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"name": "Rotton Tomato"
+								},
+								"sink": {
+									"name": "Rotton Tomato",
+									"type": "Int16"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "demo30_onpremsql_table",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "demo30_adls_csv",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Tranform and write to SQLDB",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "on prem SQL to ADLSgen2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "demo30_mappingdataflow_SQLDB",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "ManagedVNET",
+						"type": "IntegrationRuntimeReference"
+					}
+				}
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
