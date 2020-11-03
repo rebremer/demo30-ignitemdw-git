@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_ada_edl_SQLDB'"
 		},
+		"demo_shir_to_SQLDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'demo_shir_to_SQLDB'"
+		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -50,14 +54,6 @@
 		"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "onpremadventureworks"
-		},
-		"AzureKeyVault1_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/blog-metadata-shir/providers/Microsoft.KeyVault/vaults/demo-ignitemdw-akv"
-		},
-		"AzureKeyVault1_properties_groupId": {
-			"type": "string",
-			"defaultValue": "vault"
 		}
 	},
 	"variables": {
@@ -483,6 +479,25 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/demo_shir_to_SQLDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('demo_shir_to_SQLDB_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/demo30-ignitemdw-onpremintegrationruntime')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ManagedVNET')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -502,18 +517,6 @@
 					"type": "ManagedVirtualNetworkReference",
 					"referenceName": "default"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/default/AzureKeyVault1')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('AzureKeyVault1_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('AzureKeyVault1_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"

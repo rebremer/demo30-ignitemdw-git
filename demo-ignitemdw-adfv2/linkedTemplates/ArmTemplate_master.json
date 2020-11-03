@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_ada_edl_SQLDB'"
 		},
+		"demo_shir_to_SQLDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'demo_shir_to_SQLDB'"
+		},
 		"demo_vnetdataflows_SQLDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_vnetdataflows_SQLDB'"
@@ -54,6 +58,14 @@
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourcegroups/blog-metadata-rg/providers/Microsoft.DataFactory/factories/blog-metadata-adf/integrationruntimes/shir"
+		},
+		"ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/demo-ignitemdw-rg/providers/Microsoft.Storage/storageAccounts/demoignitemdwstor"
+		},
+		"ADFv2_private_endpoint_adfv2_properties_groupId": {
+			"type": "string",
+			"defaultValue": "dfs"
 		},
 		"AzureKeyVault1_properties_privateLinkResourceId": {
 			"type": "string",
@@ -104,6 +116,9 @@
 					"demo_ada_edl_SQLDB_connectionString": {
 						"value": "[parameters('demo_ada_edl_SQLDB_connectionString')]"
 					},
+					"demo_shir_to_SQLDB_connectionString": {
+						"value": "[parameters('demo_shir_to_SQLDB_connectionString')]"
+					},
 					"demo30_ADLS_properties_typeProperties_url": {
 						"value": "[parameters('demo30_ADLS_properties_typeProperties_url')]"
 					},
@@ -130,12 +145,6 @@
 					},
 					"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
-					},
-					"AzureKeyVault1_properties_privateLinkResourceId": {
-						"value": "[parameters('AzureKeyVault1_properties_privateLinkResourceId')]"
-					},
-					"AzureKeyVault1_properties_groupId": {
-						"value": "[parameters('AzureKeyVault1_properties_groupId')]"
 					}
 				}
 			},
@@ -158,6 +167,18 @@
 					"demo_vnetdataflows_SQLDB_connectionString": {
 						"value": "[parameters('demo_vnetdataflows_SQLDB_connectionString')]"
 					},
+					"ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId": {
+						"value": "[parameters('ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId')]"
+					},
+					"ADFv2_private_endpoint_adfv2_properties_groupId": {
+						"value": "[parameters('ADFv2_private_endpoint_adfv2_properties_groupId')]"
+					},
+					"AzureKeyVault1_properties_privateLinkResourceId": {
+						"value": "[parameters('AzureKeyVault1_properties_privateLinkResourceId')]"
+					},
+					"AzureKeyVault1_properties_groupId": {
+						"value": "[parameters('AzureKeyVault1_properties_groupId')]"
+					},
 					"SQLDB_private_endpoin_properties_privateLinkResourceId": {
 						"value": "[parameters('SQLDB_private_endpoin_properties_privateLinkResourceId')]"
 					},
@@ -168,6 +189,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'demo-ignitemdw-adfv2_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "demo-ignitemdw-adfv2_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'demo-ignitemdw-adfv2_ArmTemplate_1')]"
 			]
 		}
 	]

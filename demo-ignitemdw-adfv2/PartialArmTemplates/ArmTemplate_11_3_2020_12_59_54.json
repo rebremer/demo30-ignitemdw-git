@@ -1,0 +1,300 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "demo-ignitemdw-adfv2"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_onprem_vnetdataflows_sqldb')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Demo30 of MS Ignite 21:41 CET",
+				"activities": [
+					{
+						"name": "on prem SQL to staging SQL",
+						"description": "Time changed 16:30 CET",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "movie"
+										},
+										"sink": {
+											"name": "movie",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "title"
+										},
+										"sink": {
+											"name": "title",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "genres"
+										},
+										"sink": {
+											"name": "genres",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "year"
+										},
+										"sink": {
+											"name": "year",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "Rating"
+										},
+										"sink": {
+											"name": "Rating",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "Rotton Tomato"
+										},
+										"sink": {
+											"name": "Rotton Tomato",
+											"type": "Int16"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "demo30_onpremsql_table",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "demo_onprem_sqldb_staging",
+								"type": "DatasetReference"
+							}
+						]
+					},
+					{
+						"name": "Tranform and write to final SQLDB",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "on prem SQL to staging SQL",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "demo30_SQLstaging_mappingdataflow",
+								"type": "DataFlowReference"
+							},
+							"integrationRuntime": {
+								"referenceName": "ManagedVNET",
+								"type": "IntegrationRuntimeReference"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/demo_onprem_sqldb_staging')]",
+				"[concat(variables('factoryId'), '/dataflows/demo30_SQLstaging_mappingdataflow')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_onprem_sqldb_staging')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo_shir_to_SQLDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "movie",
+						"type": "nvarchar"
+					},
+					{
+						"name": "title",
+						"type": "nvarchar"
+					},
+					{
+						"name": "genres",
+						"type": "nvarchar"
+					},
+					{
+						"name": "year",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Rating",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Rotton Tomato",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "movies"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_staging_vnetdataflows_SQLDBtable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo_vnetdataflows_SQLDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "PrimaryGenre",
+						"type": "nvarchar"
+					},
+					{
+						"name": "year",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AverageRating",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "HighestRated",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LowestRated",
+						"type": "nvarchar"
+					},
+					{
+						"name": "NumberOfMovies",
+						"type": "bigint",
+						"precision": 19
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "movies"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_SQLstaging_mappingdataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "demo_staging_vnetdataflows_SQLDBtable",
+								"type": "DatasetReference"
+							},
+							"name": "SQLDBstaging"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "demo_vnetdataflows_SQLDBtable",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Select1"
+						},
+						{
+							"name": "Filter1"
+						},
+						{
+							"name": "DerivedColumn1"
+						},
+						{
+							"name": "RankMovingsByRate"
+						},
+						{
+							"name": "AggregateRatings"
+						},
+						{
+							"name": "UpsertIfTrue"
+						}
+					],
+					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> SQLDBstaging\nSQLDBstaging select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotten Tomato} = {Rotton Tomato},\n\t\teach(match(position==1),\n\t\t\t$$+'short' = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 filter(toInteger(year) > 1950) ~> Filter1\nFilter1 derive(PrimaryGenre = iif( locate('|',genres) > 1, left(genres, locate('|',genres)-1), genres)) ~> DerivedColumn1\nDerivedColumn1 window(over(PrimaryGenre,\n\t\tyear),\n\tdesc({Rotten Tomato}, true),\n\tRatingsRank = rank()) ~> RankMovingsByRate\nRankMovingsByRate aggregate(groupBy(PrimaryGenre,\n\t\tyear),\n\tAverageRating = avg(toInteger({Rotten Tomato})),\n\t\tHighestRated = first(title),\n\t\tLowestRated = last(title),\n\t\tNumberOfMovies = count()) ~> AggregateRatings\nAggregateRatings alterRow(upsertIf(true())) ~> UpsertIfTrue\nUpsertIfTrue sink(input(\n\t\tPrimaryGenre as string,\n\t\tyear as integer,\n\t\tAverageRating as double,\n\t\tHighestRated as string,\n\t\tLowestRated as string,\n\t\tNumberOfMovies as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/demo_staging_vnetdataflows_SQLDBtable')]"
+			]
+		}
+	]
+}

@@ -11,6 +11,9 @@
 		"demo_ada_edl_SQLDB_connectionString": {
 			"value": ""
 		},
+		"demo_shir_to_SQLDB_connectionString": {
+			"value": ""
+		},
 		"demo_vnetdataflows_SQLDB_connectionString": {
 			"value": ""
 		},
@@ -40,6 +43,12 @@
 		},
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"value": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourcegroups/blog-metadata-rg/providers/Microsoft.DataFactory/factories/blog-metadata-adf/integrationruntimes/shir"
+		},
+		"ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId": {
+			"value": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/demo-ignitemdw-rg/providers/Microsoft.Storage/storageAccounts/demoignitemdwstor"
+		},
+		"ADFv2_private_endpoint_adfv2_properties_groupId": {
+			"value": "dfs"
 		},
 		"AzureKeyVault1_properties_privateLinkResourceId": {
 			"value": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/blog-metadata-shir/providers/Microsoft.KeyVault/vaults/demo-ignitemdw-akv"
