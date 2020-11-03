@@ -4,7 +4,7 @@
 		"description": "Demo30 of MS Ignite 21:41 CET",
 		"activities": [
 			{
-				"name": "on prem SQL to ADLSgen2",
+				"name": "on prem SQL to staging SQL",
 				"description": "Time changed 16:30 CET",
 				"type": "Copy",
 				"dependsOn": [],
@@ -23,15 +23,7 @@
 						"partitionOption": "None"
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
+						"type": "AzureSqlSink"
 					},
 					"enableStaging": false,
 					"translator": {
@@ -102,17 +94,17 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "demo30_adls_csv",
+						"referenceName": "demo_onprem_sqldb_staging",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "Tranform and write to SQLDB",
+				"name": "Tranform and write to final SQLDB",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "on prem SQL to ADLSgen2",
+						"activity": "on prem SQL to staging SQL",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -128,7 +120,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "demo30_mappingdataflow_SQLDB",
+						"referenceName": "demo30_SQLstaging_mappingdataflow",
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
