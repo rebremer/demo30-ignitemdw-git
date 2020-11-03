@@ -10,7 +10,7 @@
 					"referenceName": "demo30_AKV",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "onpremsqlconnectionstring2"
+				"secretName": "onpremconnectionstring"
 			}
 		},
 		"connectVia": {
