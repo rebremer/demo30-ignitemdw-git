@@ -1,10 +1,10 @@
 {
-	"name": "demo_vnetdataflows_adls_sqldb",
+	"name": "demo_vnetdataflows_sqldb2",
 	"properties": {
 		"description": "Demo30 of MS Ignite 21:41 CET",
 		"activities": [
 			{
-				"name": "Tranform and write to SQLDB",
+				"name": "Tranform and write to final SQLDB",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -17,7 +17,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "demo30_mappingdataflow_SQLDB",
+						"referenceName": "demo30_SQLstaging_mappingdataflow",
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
