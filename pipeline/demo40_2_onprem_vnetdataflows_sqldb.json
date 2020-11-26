@@ -127,7 +127,8 @@
 						"linkedService": {
 							"referenceName": "demo30_ADLS",
 							"type": "LinkedServiceReference"
-						}
+						},
+						"folderPath": "logs"
 					},
 					"integrationRuntime": {
 						"referenceName": "ManagedVNET",
