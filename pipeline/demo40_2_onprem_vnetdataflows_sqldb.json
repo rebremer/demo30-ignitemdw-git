@@ -123,6 +123,12 @@
 						"referenceName": "demo30_SQLstaging_mappingdataflow",
 						"type": "DataFlowReference"
 					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "demo30_ADLS",
+							"type": "LinkedServiceReference"
+						}
+					},
 					"integrationRuntime": {
 						"referenceName": "ManagedVNET",
 						"type": "IntegrationRuntimeReference"
