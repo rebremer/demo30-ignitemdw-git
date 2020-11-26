@@ -136,10 +136,11 @@
 						"referenceName": "demo30_mappingdataflow",
 						"type": "DataFlowReference"
 					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					}
+					"integrationRuntime": {
+						"referenceName": "ManagedVNET",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
 				}
 			}
 		],
