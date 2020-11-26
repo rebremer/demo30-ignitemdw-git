@@ -1,5 +1,5 @@
 {
-	"name": "demo_vnetdataflows_sqldb",
+	"name": "demo40_1_vnetdataflows_sqldb",
 	"properties": {
 		"description": "Demo30 of MS Ignite 21:41 CET",
 		"activities": [

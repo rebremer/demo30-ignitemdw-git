@@ -1,5 +1,5 @@
 {
-	"name": "demo_onprem_vnetdataflows_sqldb",
+	"name": "demo40_2_onprem_vnetdataflows_sqldb",
 	"properties": {
 		"description": "Demo30 of MS Ignite 21:41 CET",
 		"activities": [
@@ -126,7 +126,8 @@
 					"integrationRuntime": {
 						"referenceName": "ManagedVNET",
 						"type": "IntegrationRuntimeReference"
-					}
+					},
+					"traceLevel": "Fine"
 				}
 			}
 		],
