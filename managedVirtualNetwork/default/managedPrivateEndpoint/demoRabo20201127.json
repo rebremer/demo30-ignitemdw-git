@@ -1,0 +1,7 @@
+{
+	"name": "demoRabo20201127",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/blog-datapipelineprod-rg/providers/Microsoft.Storage/storageAccounts/blogdatapipelinestorrbr4",
+		"groupId": "dfs"
+	}
+}
