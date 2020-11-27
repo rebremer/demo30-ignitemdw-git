@@ -83,6 +83,14 @@
 			"type": "string",
 			"defaultValue": "sqlServer"
 		},
+		"demoRabo20201127_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/blog-datapipelineprod-rg/providers/Microsoft.Storage/storageAccounts/blogdatapipelinestorrbr4"
+		},
+		"demoRabo20201127_properties_groupId": {
+			"type": "string",
+			"defaultValue": "dfs"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -184,6 +192,12 @@
 					},
 					"SQLDB_private_endpoin_properties_groupId": {
 						"value": "[parameters('SQLDB_private_endpoin_properties_groupId')]"
+					},
+					"demoRabo20201127_properties_privateLinkResourceId": {
+						"value": "[parameters('demoRabo20201127_properties_privateLinkResourceId')]"
+					},
+					"demoRabo20201127_properties_groupId": {
+						"value": "[parameters('demoRabo20201127_properties_groupId')]"
 					}
 				}
 			},
