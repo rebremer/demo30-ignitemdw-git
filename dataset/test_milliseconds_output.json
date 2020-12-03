@@ -1,0 +1,21 @@
+{
+	"name": "test_milliseconds_output",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "demo30_ADLS_MI",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "datemilisecondtest"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
