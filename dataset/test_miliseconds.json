@@ -1,5 +1,5 @@
 {
-	"name": "miliseconds",
+	"name": "test_miliseconds",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "demo30_ADLS_MI",
