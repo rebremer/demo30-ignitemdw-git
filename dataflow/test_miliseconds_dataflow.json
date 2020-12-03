@@ -21,8 +21,12 @@
 					"name": "sink1"
 				}
 			],
-			"transformations": [],
-			"script": "source(output(\n\t\tSystemInformationID as string,\n\t\t{ Database Version} as string,\n\t\t{ VersionDate} as timestamp 'yyyy-MM-dd HH:mm:ss.SSS',\n\t\t{ ModifiedDate} as timestamp 'yyyy-MM-dd HH:mm:ss.SSS'\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				}
+			],
+			"script": "source(output(\n\t\tSystemInformationID as string,\n\t\t{ Database Version} as string,\n\t\t{ VersionDate} as timestamp 'yyyy-MM-dd HH:mm:ss.SSS',\n\t\t{ ModifiedDate} as timestamp 'yyyy-MM-dd HH:mm:ss.SSS'\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive({ VersionDate3dig} = toTimestamp('yyyy-MM-dd-HH.mm.ss.SSS')) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
