@@ -7,9 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "demo-ignitemdw-adfv2"
 		},
+		"demo_shir_to_SQLDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'demo_shir_to_SQLDB'"
+		},
 		"demo_vnetdataflows_SQLDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_vnetdataflows_SQLDB'"
+		},
+		"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "onpremadventureworks"
 		},
 		"ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId": {
 			"type": "string",
@@ -48,6 +56,47 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_OnPremSQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "demo30_AKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_shir_to_SQLDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('demo_shir_to_SQLDB_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ManagedVNET')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
@@ -108,73 +157,6 @@
 			"properties": {
 				"privateLinkResourceId": "[parameters('demoRabo20201127_properties_privateLinkResourceId')]",
 				"groupId": "[parameters('demoRabo20201127_properties_groupId')]"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/test_miliseconds')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "dboBuildVersion.txt",
-						"fileSystem": "datemilisecondtest"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "SystemInformationID",
-						"type": "String"
-					},
-					{
-						"name": " Database Version",
-						"type": "String"
-					},
-					{
-						"name": " VersionDate",
-						"type": "String"
-					},
-					{
-						"name": " ModifiedDate",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/test_milliseconds_output')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "datemilisecondtest"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": []
 			},
 			"dependsOn": []
 		},
@@ -408,7 +390,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo_ada_edl_OnPremSQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo_databricks_cosmos_sql_table_dynamic')]",
@@ -485,7 +469,9 @@
 					"table": "movies"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo_shir_to_SQLDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo_vnetdataflows_SQLDB')]",
@@ -531,14 +517,15 @@
 							"name": "sink1"
 						}
 					],
-					"transformations": [],
-					"script": "source(output(\n\t\tSystemInformationID as string,\n\t\t{ Database Version} as string,\n\t\t{ VersionDate} as timestamp 'yyyy-MM-dd HH:mm:ss.SSS',\n\t\t{ ModifiedDate} as timestamp 'yyyy-MM-dd HH:mm:ss.SSS'\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+					"transformations": [
+						{
+							"name": "DerivedColumn1"
+						}
+					],
+					"script": "source(output(\n\t\tSystemInformationID as string,\n\t\t{ Database Version} as string,\n\t\t{ VersionDate} as string,\n\t\t{ ModifiedDate} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive({ VersionDate3dig} = toTimestamp('yyyy-MM-dd HH:mm:ss.SSS')) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/test_miliseconds')]",
-				"[concat(variables('factoryId'), '/datasets/test_milliseconds_output')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30_ignitemdw_onprem_adlsinkonly')]",
@@ -1088,6 +1075,49 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/test_milliseconds')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Test milliseconds",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "test_miliseconds_dataflow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/test_miliseconds_dataflow')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo_staging_vnetdataflows_SQLDBtable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1130,55 +1160,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "movies"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo_vnetdataflows_SQLDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo_vnetdataflows_SQLDBtable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo_vnetdataflows_SQLDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "PrimaryGenre",
-						"type": "nvarchar"
-					},
-					{
-						"name": "year",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "AverageRating",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "HighestRated",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LowestRated",
-						"type": "nvarchar"
-					},
-					{
-						"name": "NumberOfMovies",
-						"type": "bigint",
-						"precision": 19
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Ratings"
 				}
 			},
 			"dependsOn": [

@@ -124,9 +124,6 @@
 					"demo_ada_edl_SQLDB_connectionString": {
 						"value": "[parameters('demo_ada_edl_SQLDB_connectionString')]"
 					},
-					"demo_shir_to_SQLDB_connectionString": {
-						"value": "[parameters('demo_shir_to_SQLDB_connectionString')]"
-					},
 					"demo30_ADLS_properties_typeProperties_url": {
 						"value": "[parameters('demo30_ADLS_properties_typeProperties_url')]"
 					},
@@ -150,9 +147,6 @@
 					},
 					"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
-					},
-					"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
@@ -172,8 +166,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"demo_shir_to_SQLDB_connectionString": {
+						"value": "[parameters('demo_shir_to_SQLDB_connectionString')]"
+					},
 					"demo_vnetdataflows_SQLDB_connectionString": {
 						"value": "[parameters('demo_vnetdataflows_SQLDB_connectionString')]"
+					},
+					"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
 					},
 					"ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId": {
 						"value": "[parameters('ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId')]"
