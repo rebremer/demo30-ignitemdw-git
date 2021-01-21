@@ -118,7 +118,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 10:50 CET",
+						"description": "Time changed 10:58 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -567,9 +567,9 @@
 								}
 							},
 							"staging": {},
-							"integrationRuntime": {
-								"referenceName": "ManagedVNET",
-								"type": "IntegrationRuntimeReference"
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
 							},
 							"traceLevel": "Fine"
 						}
