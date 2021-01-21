@@ -20,12 +20,9 @@
 						"referenceName": "demo30_SQLstaging_mappingdataflow",
 						"type": "DataFlowReference"
 					},
-					"staging": {
-						"folderPath": "logs"
-					},
-					"integrationRuntime": {
-						"referenceName": "ManagedVNET",
-						"type": "IntegrationRuntimeReference"
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					},
 					"traceLevel": "Fine"
 				}
