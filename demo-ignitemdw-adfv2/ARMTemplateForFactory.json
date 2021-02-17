@@ -105,7 +105,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 11:58 CET",
+						"description": "Time changed 09:13 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -376,6 +376,7 @@
 					},
 					{
 						"name": "enrich data",
+						"description": "git 12:18",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [
 							{
@@ -2274,7 +2275,7 @@
 				"type": "Managed",
 				"typeProperties": {
 					"computeProperties": {
-						"location": "East US",
+						"location": "AutoResolve",
 						"dataFlowProperties": {
 							"computeType": "General",
 							"coreCount": 8,
