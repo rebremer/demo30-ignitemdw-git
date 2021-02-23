@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_ada_edl_SQLDB'"
 		},
+		"demo60_sftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'demo60_sftp'"
+		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -35,15 +39,19 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourcegroups/blog-metadata-rg/providers/Microsoft.DataFactory/factories/blog-metadata-adf/integrationruntimes/shir"
 		},
+		"demo60_sftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "20.55.114.51"
+		},
+		"demo60_sftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sftpdemoupload"
+		},
 		"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "onpremconnectionstring"
 		},
 		"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "synapseconnectionstring"
-		},
-		"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "synapseconnectionstring"
 		}
@@ -144,6 +152,27 @@
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
 			"apiVersion": "2018-06-01",
 			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo60_sftp')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Sftp",
+				"typeProperties": {
+					"host": "[parameters('demo60_sftp_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('demo60_sftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('demo60_sftp_password')]"
+					}
+				}
+			},
 			"dependsOn": []
 		},
 		{
@@ -529,29 +558,6 @@
 							"type": "LinkedServiceReference"
 						},
 						"secretName": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW_MI')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Authentication to SQLDW (Synapse) using Managed Identity of ADFv2",
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "demo30_AKV",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},

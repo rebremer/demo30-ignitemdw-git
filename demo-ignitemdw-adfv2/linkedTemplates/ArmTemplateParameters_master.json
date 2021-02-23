@@ -17,6 +17,9 @@
 		"demo_vnetdataflows_SQLDB_connectionString": {
 			"value": ""
 		},
+		"demo60_sftp_password": {
+			"value": ""
+		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"value": "https://demoignitemdwstor.dfs.core.windows.net"
 		},
@@ -67,6 +70,12 @@
 		},
 		"demoRabo20201127_properties_groupId": {
 			"value": "dfs"
+		},
+		"demo60_sftp_properties_typeProperties_host": {
+			"value": "20.55.114.51"
+		},
+		"demo60_sftp_properties_typeProperties_userName": {
+			"value": "sftpdemoupload"
 		},
 		"containerUri": {
 			"value": ""
