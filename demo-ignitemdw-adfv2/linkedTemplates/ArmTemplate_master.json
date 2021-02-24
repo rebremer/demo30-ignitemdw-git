@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'demo30_ADLS'"
 		},
+		"demo60_sftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'demo60_sftp'"
+		},
 		"demo_ada_edl_SQLDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_ada_edl_SQLDB'"
@@ -22,10 +26,6 @@
 		"demo_vnetdataflows_SQLDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_vnetdataflows_SQLDB'"
-		},
-		"demo60_sftp_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'demo60_sftp'"
 		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
@@ -54,6 +54,14 @@
 		"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "synapseconnectionstring"
+		},
+		"demo60_sftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "20.55.114.51"
+		},
+		"demo60_sftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sftpdemoupload"
 		},
 		"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
@@ -95,14 +103,6 @@
 			"type": "string",
 			"defaultValue": "dfs"
 		},
-		"demo60_sftp_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "20.55.114.51"
-		},
-		"demo60_sftp_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sftpdemoupload"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -133,11 +133,11 @@
 					"demo30_ADLS_accountKey": {
 						"value": "[parameters('demo30_ADLS_accountKey')]"
 					},
-					"demo_ada_edl_SQLDB_connectionString": {
-						"value": "[parameters('demo_ada_edl_SQLDB_connectionString')]"
-					},
 					"demo60_sftp_password": {
 						"value": "[parameters('demo60_sftp_password')]"
+					},
+					"demo_ada_edl_SQLDB_connectionString": {
+						"value": "[parameters('demo_ada_edl_SQLDB_connectionString')]"
 					},
 					"demo30_ADLS_properties_typeProperties_url": {
 						"value": "[parameters('demo30_ADLS_properties_typeProperties_url')]"
@@ -151,20 +151,17 @@
 					"demo30_HTTP_properties_typeProperties_url": {
 						"value": "[parameters('demo30_HTTP_properties_typeProperties_url')]"
 					},
-					"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
-						"value": "[parameters('demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId')]"
-					},
 					"demo60_sftp_properties_typeProperties_host": {
 						"value": "[parameters('demo60_sftp_properties_typeProperties_host')]"
 					},
 					"demo60_sftp_properties_typeProperties_userName": {
 						"value": "[parameters('demo60_sftp_properties_typeProperties_userName')]"
 					},
+					"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId')]"
+					},
 					"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('demo30_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
-					},
-					"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
@@ -189,6 +186,9 @@
 					},
 					"demo_vnetdataflows_SQLDB_connectionString": {
 						"value": "[parameters('demo_vnetdataflows_SQLDB_connectionString')]"
+					},
+					"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
 					},
 					"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"

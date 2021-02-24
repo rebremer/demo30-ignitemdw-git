@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'demo30_ADLS'"
 		},
+		"demo60_sftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'demo60_sftp'"
+		},
 		"demo_ada_edl_SQLDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_ada_edl_SQLDB'"
@@ -22,10 +26,6 @@
 		"demo_vnetdataflows_SQLDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_vnetdataflows_SQLDB'"
-		},
-		"demo60_sftp_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'demo60_sftp'"
 		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
@@ -54,6 +54,14 @@
 		"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "synapseconnectionstring"
+		},
+		"demo60_sftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "20.55.114.51"
+		},
+		"demo60_sftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sftpdemoupload"
 		},
 		"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
@@ -94,14 +102,6 @@
 		"demoRabo20201127_properties_groupId": {
 			"type": "string",
 			"defaultValue": "dfs"
-		},
-		"demo60_sftp_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "20.55.114.51"
-		},
-		"demo60_sftp_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sftpdemoupload"
 		}
 	},
 	"variables": {
@@ -117,7 +117,7 @@
 				"activities": [
 					{
 						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 09:13 CET",
+						"description": "Time changed 14:15 CET",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -750,6 +750,254 @@
 				"[concat(variables('factoryId'), '/datasets/demo_onprem_sqldb_staging')]",
 				"[concat(variables('factoryId'), '/dataflows/demo30_SQLstaging_mappingdataflow')]",
 				"[concat(variables('factoryId'), '/integrationRuntimes/ManagedVNET')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo60_ignitemdw_sftp')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Demo30 of MS Ignite 21:41 CET",
+				"activities": [
+					{
+						"name": "HTTP to ADLSgen2",
+						"description": "Time changed 09:13 CET",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "movie"
+										},
+										"sink": {
+											"name": "movie",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "title"
+										},
+										"sink": {
+											"name": "title",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "genres"
+										},
+										"sink": {
+											"name": "genres",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "year"
+										},
+										"sink": {
+											"name": "year",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "Rating"
+										},
+										"sink": {
+											"name": "Rating",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "Rotton Tomato"
+										},
+										"sink": {
+											"name": "Rotton Tomato",
+											"type": "Int16"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "demo30_http_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "demo30_adls_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "ADLSgen2 to sFTP",
+						"description": "Time changed 09:13 CET",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "HTTP to ADLSgen2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "SftpWriteSettings",
+									"operationTimeout": "01:00:00",
+									"useTempFileRename": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "movie"
+										},
+										"sink": {
+											"type": "String",
+											"ordinal": 1
+										}
+									},
+									{
+										"source": {
+											"name": "title"
+										},
+										"sink": {
+											"type": "String",
+											"ordinal": 2
+										}
+									},
+									{
+										"source": {
+											"name": "genres"
+										},
+										"sink": {
+											"type": "String",
+											"ordinal": 3
+										}
+									},
+									{
+										"source": {
+											"name": "year"
+										},
+										"sink": {
+											"type": "Int16",
+											"ordinal": 4
+										}
+									},
+									{
+										"source": {
+											"name": "Rating"
+										},
+										"sink": {
+											"type": "Int16",
+											"ordinal": 5
+										}
+									},
+									{
+										"source": {
+											"name": "Rotton Tomato"
+										},
+										"sink": {
+											"type": "Int16",
+											"ordinal": 6
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "demo30_adls_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/demo30_http_csv')]",
+				"[concat(variables('factoryId'), '/datasets/demo30_adls_csv')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]"
 			]
 		},
 		{
@@ -1434,6 +1682,32 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/test_miliseconds_dataflow')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo60_sftp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation",
+						"folderPath": "/uploads"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo60_sftp')]"
 			]
 		},
 		{
@@ -2164,6 +2438,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/demo60_sftp')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Sftp",
+				"typeProperties": {
+					"host": "[parameters('demo60_sftp_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('demo60_sftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('demo60_sftp_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_OnPremSQL')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -2575,301 +2870,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo60_ignitemdw_sftp')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Demo30 of MS Ignite 21:41 CET",
-				"activities": [
-					{
-						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 09:13 CET",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "movie"
-										},
-										"sink": {
-											"name": "movie",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "title"
-										},
-										"sink": {
-											"name": "title",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "genres"
-										},
-										"sink": {
-											"name": "genres",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "year"
-										},
-										"sink": {
-											"name": "year",
-											"type": "Int16"
-										}
-									},
-									{
-										"source": {
-											"name": "Rating"
-										},
-										"sink": {
-											"name": "Rating",
-											"type": "Int16"
-										}
-									},
-									{
-										"source": {
-											"name": "Rotton Tomato"
-										},
-										"sink": {
-											"name": "Rotton Tomato",
-											"type": "Int16"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "demo30_http_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "demo30_adls_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "ADLSgen2 to sFTP",
-						"description": "Time changed 09:13 CET",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "HTTP to ADLSgen2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "SftpWriteSettings",
-									"operationTimeout": "01:00:00",
-									"useTempFileRename": true
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "movie"
-										},
-										"sink": {
-											"type": "String",
-											"ordinal": 1
-										}
-									},
-									{
-										"source": {
-											"name": "title"
-										},
-										"sink": {
-											"type": "String",
-											"ordinal": 2
-										}
-									},
-									{
-										"source": {
-											"name": "genres"
-										},
-										"sink": {
-											"type": "String",
-											"ordinal": 3
-										}
-									},
-									{
-										"source": {
-											"name": "year"
-										},
-										"sink": {
-											"type": "Int16",
-											"ordinal": 4
-										}
-									},
-									{
-										"source": {
-											"name": "Rating"
-										},
-										"sink": {
-											"type": "Int16",
-											"ordinal": 5
-										}
-									},
-									{
-										"source": {
-											"name": "Rotton Tomato"
-										},
-										"sink": {
-											"type": "Int16",
-											"ordinal": 6
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "demo30_adls_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DelimitedText1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/demo30_http_csv')]",
-				"[concat(variables('factoryId'), '/datasets/demo30_adls_csv')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo60_sftp')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "Sftp",
-				"typeProperties": {
-					"host": "[parameters('demo60_sftp_properties_typeProperties_host')]",
-					"port": 22,
-					"skipHostKeyValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('demo60_sftp_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('demo60_sftp_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo60_sftp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "SftpLocation",
-						"folderPath": "/uploads"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo60_sftp')]"
 			]
 		}
 	]
