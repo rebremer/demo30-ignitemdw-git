@@ -112,13 +112,21 @@
 				"inputs": [
 					{
 						"referenceName": "moviesminusonecsv",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"foldername": "data",
+							"filename": "movies.csv"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "moviesminusonecsv",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"foldername": "data",
+							"filename": "moviesminusone.csv"
+						}
 					}
 				]
 			}
