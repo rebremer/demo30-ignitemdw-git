@@ -160,7 +160,7 @@
 							},
 							"sink1": {
 								"foldername": "data",
-								"filename": "movies.csv"
+								"filename": "movies_df.csv"
 							}
 						}
 					},
