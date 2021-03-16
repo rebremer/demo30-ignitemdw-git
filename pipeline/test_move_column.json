@@ -1,5 +1,5 @@
 {
-	"name": "test_movies",
+	"name": "test_move_column",
 	"properties": {
 		"activities": [
 			{
@@ -129,6 +129,47 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "test_move_column_df",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"foldername": "data",
+								"filename": "movies.csv"
+							},
+							"sink1": {
+								"foldername": "data",
+								"filename": "movies.csv"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"annotations": []
