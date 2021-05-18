@@ -76,6 +76,17 @@
 		},
 		"demoRabo20201127_properties_groupId": {
 			"value": "dfs"
+		},
+		"testsqlvmprivservice_properties_privateLinkResourceId": {
+			"value": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/blog-metadata-shir/providers/Microsoft.Network/privateLinkServices/blog-sqlvm-pls"
+		},
+		"testsqlvmprivservice_properties_groupId": {
+			"value": ""
+		},
+		"testsqlvmprivservice_properties_fqdns": {
+			"value": [
+				"testsqlvmpriv"
+			]
 		}
 	}
 }

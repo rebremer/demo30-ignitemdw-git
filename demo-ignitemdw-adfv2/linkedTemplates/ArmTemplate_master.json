@@ -103,6 +103,20 @@
 			"type": "string",
 			"defaultValue": "dfs"
 		},
+		"testsqlvmprivservice_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/blog-metadata-shir/providers/Microsoft.Network/privateLinkServices/blog-sqlvm-pls"
+		},
+		"testsqlvmprivservice_properties_groupId": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"testsqlvmprivservice_properties_fqdns": {
+			"type": "array",
+			"defaultValue": [
+				"testsqlvmpriv"
+			]
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -159,9 +173,6 @@
 					},
 					"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId')]"
-					},
-					"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('demo30_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
@@ -186,6 +197,9 @@
 					},
 					"demo_vnetdataflows_SQLDB_connectionString": {
 						"value": "[parameters('demo_vnetdataflows_SQLDB_connectionString')]"
+					},
+					"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo30_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
 					},
 					"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
@@ -219,6 +233,15 @@
 					},
 					"demoRabo20201127_properties_groupId": {
 						"value": "[parameters('demoRabo20201127_properties_groupId')]"
+					},
+					"testsqlvmprivservice_properties_privateLinkResourceId": {
+						"value": "[parameters('testsqlvmprivservice_properties_privateLinkResourceId')]"
+					},
+					"testsqlvmprivservice_properties_groupId": {
+						"value": "[parameters('testsqlvmprivservice_properties_groupId')]"
+					},
+					"testsqlvmprivservice_properties_fqdns": {
+						"value": "[parameters('testsqlvmprivservice_properties_fqdns')]"
 					}
 				}
 			},
