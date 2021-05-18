@@ -114,8 +114,7 @@
 						"referenceName": "moviesminusonecsv",
 						"type": "DatasetReference",
 						"parameters": {
-							"foldername": "data",
-							"filename": "movies.csv"
+							"foldername": "data"
 						}
 					}
 				],
