@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": "simplepipelinewithdelta"
+				"fileSystem": "dbrspoke1"
 			}
 		}
 	}
