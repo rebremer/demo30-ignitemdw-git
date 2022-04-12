@@ -15,22 +15,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_vnetdataflows_SQLDB'"
 		},
-		"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "onpremconnectionstring"
-		},
-		"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "synapseconnectionstring"
-		},
-		"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "synapseconnectionstring"
-		},
-		"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "onpremadventureworks"
-		},
 		"ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourceGroups/demo-ignitemdw-rg/providers/Microsoft.Storage/storageAccounts/demoignitemdwstor"
@@ -76,101 +60,16 @@
 			"defaultValue": [
 				"testsqlvmpriv"
 			]
+		},
+		"demo30_ADLS_MI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_OnPremSQL')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "demo30_AKV",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('demo30_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "demo30_AKV",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW_MI')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Authentication to SQLDW (Synapse) using Managed Identity of ADFv2",
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "demo30_AKV",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_OnPremSQL')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "demo30_AKV",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo_shir_to_SQLDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -201,6 +100,30 @@
 							"computeType": "General",
 							"coreCount": 8,
 							"timeToLive": 0
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demoSTIB')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "East US",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false
 						}
 					}
 				},
@@ -263,15 +186,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/demo60_ignitemdw_sftp')]",
+			"name": "[concat(parameters('factoryName'), '/10_1 perf test')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Demo30 of MS Ignite 21:41 CET",
 				"activities": [
 					{
-						"name": "HTTP to ADLSgen2",
-						"description": "Time changed 09:13 CET",
+						"name": "Copy data1",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -284,384 +205,107 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "movie"
-										},
-										"sink": {
-											"name": "movie",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "title"
-										},
-										"sink": {
-											"name": "title",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "genres"
-										},
-										"sink": {
-											"name": "genres",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "year"
-										},
-										"sink": {
-											"name": "year",
-											"type": "Int16"
-										}
-									},
-									{
-										"source": {
-											"name": "Rating"
-										},
-										"sink": {
-											"name": "Rating",
-											"type": "Int16"
-										}
-									},
-									{
-										"source": {
-											"name": "Rotton Tomato"
-										},
-										"sink": {
-											"name": "Rotton Tomato",
-											"type": "Int16"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "demo30_http_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "demo30_adls_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "ADLSgen2 to sFTP",
-						"description": "Time changed 09:13 CET",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "HTTP to ADLSgen2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
+								"type": "BinarySource",
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
+									"recursive": true
 								},
 								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
+									"type": "BinaryReadSettings"
 								}
 							},
 							"sink": {
-								"type": "DelimitedTextSink",
+								"type": "BinarySink",
 								"storeSettings": {
-									"type": "SftpWriteSettings",
-									"operationTimeout": "01:00:00",
-									"useTempFileRename": true
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
+									"type": "AzureBlobFSWriteSettings"
 								}
 							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "movie"
-										},
-										"sink": {
-											"type": "String",
-											"ordinal": 1
-										}
-									},
-									{
-										"source": {
-											"name": "title"
-										},
-										"sink": {
-											"type": "String",
-											"ordinal": 2
-										}
-									},
-									{
-										"source": {
-											"name": "genres"
-										},
-										"sink": {
-											"type": "String",
-											"ordinal": 3
-										}
-									},
-									{
-										"source": {
-											"name": "year"
-										},
-										"sink": {
-											"type": "Int16",
-											"ordinal": 4
-										}
-									},
-									{
-										"source": {
-											"name": "Rating"
-										},
-										"sink": {
-											"type": "Int16",
-											"ordinal": 5
-										}
-									},
-									{
-										"source": {
-											"name": "Rotton Tomato"
-										},
-										"sink": {
-											"type": "Int16",
-											"ordinal": 6
-										}
-									}
-								]
-							}
+							"enableStaging": false
 						},
 						"inputs": [
 							{
-								"referenceName": "demo30_adls_csv",
+								"referenceName": "demostorperformance",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"folder": "10gbdatasource"
+								}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DelimitedText1",
+								"referenceName": "demostorperformance",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"folder": "10gbdatasink3"
+								}
 							}
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_consumer')]",
+			"name": "[concat(parameters('factoryName'), '/privateDBr')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Stage defined Archive to Information Factory",
-						"description": "[[{\"source\":{\"schema\":\"dbo\",\"table\":\"DatabaseLog\"},\"destination\":{\"fileName\":\"dboDatabaseLog.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ErrorLog\"},\"destination\":{\"fileName\":\"dboErrorLog.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Person\"},\"destination\":{\"fileName\":\"PersonPerson.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PersonPhone\"},\"destination\":{\"fileName\":\"PersonPersonPhone.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PhoneNumberType\"},\"destination\":{\"fileName\":\"PersonPhoneNumberType.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"StateProvince\"},\"destination\":{\"fileName\":\"PersonStateProvince.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Product\"},\"destination\":{\"fileName\":\"ProductionProduct.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ProductCategory\"},\"destination\":{\"fileName\":\"ProductionProductCategory.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"ProductCostHistory\"},\"destination\":{\"fileName\":\"ProductionProductCostHistory.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"Customer\"},\"destination\":{\"fileName\":\"SalesCustomer.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"PersonCreditCard\"},\"destination\":{\"fileName\":\"SalesPersonCreditCard.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"SalesOrderHeader\"},\"destination\":{\"fileName\":\"SalesSalesOrderHeader.parquet\"}}, {\"source\":{\"schema\":\"dbo\",\"table\":\"SalesOrderDetail\"},\"destination\":{\"fileName\":\"SalesSalesOrderDetail.parquet\"}}]",
-						"type": "ForEach",
+						"name": "Copy data1",
+						"type": "Copy",
 						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
 						"userProperties": [],
 						"typeProperties": {
-							"items": {
-								"value": "@pipeline().parameters.cw_items",
-								"type": "Expression"
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
 							},
-							"activities": [
-								{
-									"name": "Copy parquet to table",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [
-										{
-											"name": "Source",
-											"value": "@{item().source.schema}.@{item().source.table}"
-										},
-										{
-											"name": "Destination",
-											"value": "dataraw//@{item().destination.fileName}"
-										}
-									],
-									"typeProperties": {
-										"source": {
-											"type": "ParquetSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true
-											}
-										},
-										"sink": {
-											"type": "AzureSqlSink"
-										},
-										"enableStaging": false,
-										"validateDataConsistency": false
-									},
-									"inputs": [
-										{
-											"referenceName": "demo_ada_edl_definedarchive_parquet",
-											"type": "DatasetReference",
-											"parameters": {
-												"cw_fileName": "@item().destination.fileName"
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "demo_ada_edl_sqldb_table_dynamic",
-											"type": "DatasetReference",
-											"parameters": {
-												"cw_schema": "@item().source.schema",
-												"cw_table": "@item().source.table"
-											}
-										}
-									]
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
 								}
-							]
-						}
-					},
-					{
-						"name": "Truncate staging",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
+							},
+							"enableStaging": false
+						},
+						"inputs": [
 							{
-								"activity": "Execute scripts on staging",
-								"dependencyConditions": [
-									"Succeeded"
-								]
+								"referenceName": "Binary1",
+								"type": "DatasetReference",
+								"parameters": {}
 							}
 						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[TruncateTable]",
-							"storedProcedureParameters": {
-								"databaseName": {
-									"value": "demo-informationfactory-db",
-									"type": "String"
-								},
-								"tableName": {
-									"value": "Person",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "demo_ada_edl_SQLDB",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Execute scripts on staging",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
+						"outputs": [
 							{
-								"activity": "Stage defined Archive to Information Factory",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[uspLogError]"
-						},
-						"linkedServiceName": {
-							"referenceName": "demo_ada_edl_SQLDB",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"parameters": {
-					"cw_items": {
-						"type": "Array",
-						"defaultValue": [
-							{
-								"source": {
-									"schema": "dbo",
-									"table": "Person"
-								},
-								"destination": {
-									"fileName": "PersonPerson.parquet"
-								}
+								"referenceName": "Binary2",
+								"type": "DatasetReference",
+								"parameters": {}
 							}
 						]
 					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
 				},
 				"annotations": []
 			},
@@ -684,9 +328,7 @@
 					"table": "movies"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_OnPremSQL')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30_synapse_table')]",
@@ -705,9 +347,7 @@
 					"table": "Ratings"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_SQLDW_MI')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_sql_table_dynamic')]",
@@ -740,9 +380,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo_ada_edl_OnPremSQL')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo_databricks_cosmos_sql_table_dynamic')]",
@@ -775,9 +413,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_OnPremSQL')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo_onprem_sqldb_staging')]",
@@ -826,6 +462,25 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/demo30_ADLS_MI')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('demo30_ADLS_MI_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "ManagedVNET",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ManagedVNET')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo_vnetdataflows_SQLDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -845,39 +500,92 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/test_miliseconds_dataflow')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
+			"name": "[concat(parameters('factoryName'), '/demo30_adls_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"type": "MappingDataFlow",
+				"linkedServiceName": {
+					"referenceName": "demo30_ADLS_MI",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
 				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "test_miliseconds",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "test_milliseconds_output",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "DerivedColumn1"
-						}
-					],
-					"script": "source(output(\n\t\tSystemInformationID as string,\n\t\t{ Database Version} as string,\n\t\t{ VersionDate} as string,\n\t\t{ ModifiedDate} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive({ VersionDate3dig} = toTimestamp('yyyy-MM-dd HH:mm:ss.SSS')) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
-				}
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "movies.csv",
+						"fileSystem": "data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_adls_csv_output')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo30_ADLS_MI",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "output"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_definedarchive_parquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo30_ADLS_MI",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_fileName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().cw_fileName",
+							"type": "Expression"
+						},
+						"fileSystem": "datadefined"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
+			]
 		}
 	]
 }

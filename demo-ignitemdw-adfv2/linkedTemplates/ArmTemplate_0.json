@@ -19,11 +19,11 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_ada_edl_SQLDB'"
 		},
-		"demo30_ADLS_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
+		"privatestor_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'privatestor'"
 		},
-		"demo30_ADLS_MI_properties_typeProperties_url": {
+		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
 		},
@@ -43,9 +43,29 @@
 			"type": "string",
 			"defaultValue": "sftpdemoupload"
 		},
+		"privatestor_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://blogstorhubstor3.dfs.core.windows.net"
+		},
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/513a7987-b0d9-4106-a24d-4b3f49136ea8/resourcegroups/blog-metadata-rg/providers/Microsoft.DataFactory/factories/blog-metadata-adf/integrationruntimes/shir"
+		},
+		"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "onpremconnectionstring"
+		},
+		"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "synapseconnectionstring"
+		},
+		"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "synapseconnectionstring"
+		},
+		"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "onpremadventureworks"
 		}
 	},
 	"variables": {
@@ -65,19 +85,6 @@
 						"type": "SecureString",
 						"value": "[parameters('demo30_ADLS_accountKey')]"
 					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_ADLS_MI')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('demo30_ADLS_MI_properties_typeProperties_url')]"
 				}
 			},
 			"dependsOn": []
@@ -145,6 +152,23 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/privatestor')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('privatestor_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('privatestor_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-onpremintegrationruntime')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -166,6 +190,50 @@
 			"apiVersion": "2018-06-01",
 			"properties": {},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo30_ADLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "simplepipelinewithdelta"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "privatestor",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "dbrspoke1"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/privatestor')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
@@ -191,61 +259,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/demo60_sftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_adls_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "movies.csv",
-						"fileSystem": "data"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo30_adls_csv_output')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "output"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
 			]
 		},
 		{
@@ -294,72 +307,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_definedarchive_parquet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"cw_fileName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().cw_fileName",
-							"type": "Expression"
-						},
-						"fileSystem": "datadefined"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_rawarchive_parquet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"cw_fileName": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().cw_fileName",
-							"type": "Expression"
-						},
-						"fileSystem": "dataraw"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_sqldb_table_dynamic')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -395,68 +342,33 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/moviesminusonecsv')]",
+			"name": "[concat(parameters('factoryName'), '/demostorperformance')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
+					"referenceName": "demo30_ADLS",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"foldername": {
-						"type": "string",
-						"defaultValue": "data"
-					},
-					"filename": {
-						"type": "string",
-						"defaultValue": "movies.csv"
+					"folder": {
+						"type": "string"
 					}
 				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "Binary",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
 						"fileSystem": {
-							"value": "@dataset().foldername",
+							"value": "@dataset().folder",
 							"type": "Expression"
 						}
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "movie",
-						"type": "String"
-					},
-					{
-						"name": "title",
-						"type": "String"
-					},
-					{
-						"name": "genres",
-						"type": "String"
-					},
-					{
-						"name": "year",
-						"type": "String"
-					},
-					{
-						"name": "Rotton Tomato",
-						"type": "String"
 					}
-				]
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
+				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS')]"
 			]
 		},
 		{
@@ -505,77 +417,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/test_miliseconds')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "dboBuildVersion.txt",
-						"fileSystem": "datemilisecondtest"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "SystemInformationID",
-						"type": "String"
-					},
-					{
-						"name": " Database Version",
-						"type": "String"
-					},
-					{
-						"name": " VersionDate",
-						"type": "String"
-					},
-					{
-						"name": " ModifiedDate",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/test_milliseconds_output')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "demo30_ADLS_MI",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "datemilisecondtest"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS_MI')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -596,6 +437,105 @@
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_OnPremSQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "demo30_AKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('demo30_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/demo30-ignitemdw-onpremintegrationruntime')]",
+				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "demo30_AKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo30_SQLDW_MI')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Authentication to SQLDW (Synapse) using Managed Identity of ADFv2",
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "demo30_AKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_ada_edl_OnPremSQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "demo30_AKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "demo30-ignitemdw-onpremintegrationruntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/demo30-ignitemdw-onpremintegrationruntime')]",
 				"[concat(variables('factoryId'), '/linkedServices/demo30_AKV')]"
 			]
 		}

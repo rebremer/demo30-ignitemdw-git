@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_vnetdataflows_SQLDB'"
 		},
+		"privatestor_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'privatestor'"
+		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -66,6 +70,10 @@
 		"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "onpremadventureworks"
+		},
+		"privatestor_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://blogstorhubstor3.dfs.core.windows.net"
 		},
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -122,6 +130,73 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/10_1 perf test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "demostorperformance",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "10gbdatasource"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "demostorperformance",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "10gbdatasink3"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/demostorperformance')]"
+			]
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30_ignitemdw')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -278,6 +353,10 @@
 						}
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -439,6 +518,10 @@
 						}
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -561,6 +644,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -607,6 +694,10 @@
 						}
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -757,6 +848,10 @@
 						}
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -1006,6 +1101,10 @@
 						]
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -1155,6 +1254,10 @@
 						}
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"parameters": {
 					"cw_items": {
 						"type": "Array",
@@ -1339,6 +1442,10 @@
 						}
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"parameters": {
 					"cw_items": {
 						"type": "Array",
@@ -1577,6 +1684,10 @@
 						}
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"parameters": {
 					"cw_items": {
 						"type": "Array",
@@ -1648,11 +1759,79 @@
 						}
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/demo30_mappingdataflow_SQLDB')]",
 				"[concat(variables('factoryId'), '/integrationRuntimes/ManagedVNET')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/privateDBr')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Binary1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Binary2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Binary1')]",
+				"[concat(variables('factoryId'), '/datasets/Binary2')]"
 			]
 		},
 		{
@@ -1692,10 +1871,58 @@
 						}
 					}
 				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/test_miliseconds_dataflow')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo30_ADLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "simplepipelinewithdelta"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "privatestor",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "dbrspoke1"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/privatestor')]"
 			]
 		},
 		{
@@ -2182,6 +2409,36 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/demostorperformance')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "demo30_ADLS",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/demo30_ADLS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/moviesminusonecsv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2412,9 +2669,15 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('demo30_ADLS_MI_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "ManagedVNET",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ManagedVNET')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30_AKV')]",
@@ -2616,6 +2879,23 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/privatestor')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('privatestor_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('privatestor_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo30-ignitemdw-trigger1day')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -2695,6 +2975,32 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/demoSTIB')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "East US",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/demo30_SQLstaging_mappingdataflow')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -2743,7 +3049,7 @@
 							"name": "AggregateRatings"
 						}
 					],
-					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> SQLDBstaging\nSQLDBstaging select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotten Tomato} = {Rotton Tomato},\n\t\teach(match(position==1),\n\t\t\t$$+'short' = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 filter(toInteger(year) > 1950) ~> Filter1\nFilter1 derive(PrimaryGenre = iif( locate('|',genres) > 1, left(genres, locate('|',genres)-1), genres)) ~> DerivedColumn1\nDerivedColumn1 window(over(PrimaryGenre,\n\t\tyear),\n\tdesc({Rotten Tomato}, true),\n\tRatingsRank = rank()) ~> RankMovingsByRate\nRankMovingsByRate aggregate(groupBy(PrimaryGenre,\n\t\tyear),\n\tAverageRating = avg(toInteger({Rotten Tomato})),\n\t\tHighestRated = first(title),\n\t\tLowestRated = last(title),\n\t\tNumberOfMovies = count()) ~> AggregateRatings\nAggregateRatings sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1\nAggregateRatings sink(input(\n\t\tPrimaryGenre as string,\n\t\tyear as integer,\n\t\tAverageRating as double,\n\t\tHighestRated as string,\n\t\tLowestRated as string,\n\t\tNumberOfMovies as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink2"
+					"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> SQLDBstaging\nSQLDBstaging select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotten Tomato} = {Rotton Tomato},\n\t\teach(match(position==1),\n\t\t\t$$+'short' = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 filter(toInteger(year) > 1950) ~> Filter1\nFilter1 derive(PrimaryGenre = iif( locate('|',genres) > 1, left(genres, locate('|',genres)-1), genres)) ~> DerivedColumn1\nDerivedColumn1 window(over(PrimaryGenre,\n\t\tyear),\n\tdesc({Rotten Tomato}, true),\n\tRatingsRank = rank()) ~> RankMovingsByRate\nRankMovingsByRate aggregate(groupBy(PrimaryGenre,\n\t\tyear),\n\tAverageRating = avg(toInteger({Rotten Tomato})),\n\t\tHighestRated = first(title),\n\t\tLowestRated = last(title),\n\t\tNumberOfMovies = count()) ~> AggregateRatings\nAggregateRatings sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string\n\t),\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1\nAggregateRatings sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tPrimaryGenre as string,\n\t\tyear as integer,\n\t\tAverageRating as double,\n\t\tHighestRated as string,\n\t\tLowestRated as string,\n\t\tNumberOfMovies as long\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink2"
 				}
 			},
 			"dependsOn": [
@@ -2850,7 +3156,7 @@
 							"name": "UpsertIfTrue"
 						}
 					],
-					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> adlssource\nadlssource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotten Tomato} = {Rotton Tomato},\n\t\teach(match(position==1),\n\t\t\t$$+'short' = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 filter(toInteger(year) > 1950) ~> Filter1\nFilter1 derive(PrimaryGenre = iif( locate('|',genres) > 1, left(genres, locate('|',genres)-1), genres)) ~> DerivedColumn1\nDerivedColumn1 window(over(PrimaryGenre,\n\t\tyear),\n\tdesc({Rotten Tomato}, true),\n\tRatingsRank = rank()) ~> RankMovingsByRate\nRankMovingsByRate aggregate(groupBy(PrimaryGenre,\n\t\tyear),\n\tAverageRating = avg(toInteger({Rotten Tomato})),\n\t\tHighestRated = first(title),\n\t\tLowestRated = last(title),\n\t\tNumberOfMovies = count()) ~> AggregateRatings\nAggregateRatings alterRow(insertIf(true())) ~> UpsertIfTrue\nUpsertIfTrue sink(input(\n\t\tPrimaryGenre as string,\n\t\tyear as integer,\n\t\tAverageRating as double,\n\t\tHighestRated as string,\n\t\tLowestRated as string,\n\t\tNumberOfMovies as long\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
+					"script": "source(output(\n\t\tmovie as integer,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as short,\n\t\tRating as short,\n\t\t{Rotton Tomato} as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> adlssource\nadlssource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\t{Rotten Tomato} = {Rotton Tomato},\n\t\teach(match(position==1),\n\t\t\t$$+'short' = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 filter(toInteger(year) > 1950) ~> Filter1\nFilter1 derive(PrimaryGenre = iif( locate('|',genres) > 1, left(genres, locate('|',genres)-1), genres)) ~> DerivedColumn1\nDerivedColumn1 window(over(PrimaryGenre,\n\t\tyear),\n\tdesc({Rotten Tomato}, true),\n\tRatingsRank = rank()) ~> RankMovingsByRate\nRankMovingsByRate aggregate(groupBy(PrimaryGenre,\n\t\tyear),\n\tAverageRating = avg(toInteger({Rotten Tomato})),\n\t\tHighestRated = first(title),\n\t\tLowestRated = last(title),\n\t\tNumberOfMovies = count()) ~> AggregateRatings\nAggregateRatings alterRow(insertIf(true())) ~> UpsertIfTrue\nUpsertIfTrue sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tPrimaryGenre as string,\n\t\tyear as integer,\n\t\tAverageRating as double,\n\t\tHighestRated as string,\n\t\tLowestRated as string,\n\t\tNumberOfMovies as long\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
 				}
 			},
 			"dependsOn": [
@@ -2888,7 +3194,7 @@
 							"name": "DerivedColumn1"
 						}
 					],
-					"script": "source(output(\n\t\tSystemInformationID as string,\n\t\t{ Database Version} as string,\n\t\t{ VersionDate} as string,\n\t\t{ ModifiedDate} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive({ VersionDate3dig} = toTimestamp('yyyy-MM-dd HH:mm:ss.SSS')) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+					"script": "source(output(\n\t\tSystemInformationID as string,\n\t\t{ Database Version} as string,\n\t\t{ VersionDate} as string,\n\t\t{ ModifiedDate} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive({ VersionDate3dig} = toTimestamp('yyyy-MM-dd HH:mm:ss.SSS')) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
 				}
 			},
 			"dependsOn": [

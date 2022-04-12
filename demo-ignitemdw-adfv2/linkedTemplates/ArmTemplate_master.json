@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'demo_vnetdataflows_SQLDB'"
 		},
+		"privatestor_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'privatestor'"
+		},
 		"demo30_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://demoignitemdwstor.dfs.core.windows.net"
@@ -66,6 +70,10 @@
 		"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "onpremadventureworks"
+		},
+		"privatestor_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://blogstorhubstor3.dfs.core.windows.net"
 		},
 		"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -153,11 +161,11 @@
 					"demo_ada_edl_SQLDB_connectionString": {
 						"value": "[parameters('demo_ada_edl_SQLDB_connectionString')]"
 					},
+					"privatestor_accountKey": {
+						"value": "[parameters('privatestor_accountKey')]"
+					},
 					"demo30_ADLS_properties_typeProperties_url": {
 						"value": "[parameters('demo30_ADLS_properties_typeProperties_url')]"
-					},
-					"demo30_ADLS_MI_properties_typeProperties_url": {
-						"value": "[parameters('demo30_ADLS_MI_properties_typeProperties_url')]"
 					},
 					"demo30_AKV_properties_typeProperties_baseUrl": {
 						"value": "[parameters('demo30_AKV_properties_typeProperties_baseUrl')]"
@@ -171,8 +179,23 @@
 					"demo60_sftp_properties_typeProperties_userName": {
 						"value": "[parameters('demo60_sftp_properties_typeProperties_userName')]"
 					},
+					"privatestor_properties_typeProperties_url": {
+						"value": "[parameters('privatestor_properties_typeProperties_url')]"
+					},
 					"demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('demo30-ignitemdw-onpremintegrationruntime_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo30_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
+					},
+					"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
+					},
+					"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
+					},
+					"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
@@ -197,18 +220,6 @@
 					},
 					"demo_vnetdataflows_SQLDB_connectionString": {
 						"value": "[parameters('demo_vnetdataflows_SQLDB_connectionString')]"
-					},
-					"demo30_OnPremSQL_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('demo30_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
-					},
-					"demo30_SQLDW_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('demo30_SQLDW_properties_typeProperties_connectionString_secretName')]"
-					},
-					"demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('demo30_SQLDW_MI_properties_typeProperties_connectionString_secretName')]"
-					},
-					"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
 					},
 					"ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId": {
 						"value": "[parameters('ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId')]"
@@ -242,6 +253,9 @@
 					},
 					"testsqlvmprivservice_properties_fqdns": {
 						"value": "[parameters('testsqlvmprivservice_properties_fqdns')]"
+					},
+					"demo30_ADLS_MI_properties_typeProperties_url": {
+						"value": "[parameters('demo30_ADLS_MI_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -267,6 +281,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'demo-ignitemdw-adfv2_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "demo-ignitemdw-adfv2_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'demo-ignitemdw-adfv2_ArmTemplate_2')]"
 			]
 		}
 	]
