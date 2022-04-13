@@ -152,9 +152,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"demo30_ADLS_accountKey": {
-						"value": "[parameters('demo30_ADLS_accountKey')]"
-					},
 					"demo60_sftp_password": {
 						"value": "[parameters('demo60_sftp_password')]"
 					},
@@ -164,8 +161,8 @@
 					"privatestor_accountKey": {
 						"value": "[parameters('privatestor_accountKey')]"
 					},
-					"demo30_ADLS_properties_typeProperties_url": {
-						"value": "[parameters('demo30_ADLS_properties_typeProperties_url')]"
+					"demo_shir_to_SQLDB_connectionString": {
+						"value": "[parameters('demo_shir_to_SQLDB_connectionString')]"
 					},
 					"demo30_AKV_properties_typeProperties_baseUrl": {
 						"value": "[parameters('demo30_AKV_properties_typeProperties_baseUrl')]"
@@ -196,6 +193,12 @@
 					},
 					"demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('demo_ada_edl_OnPremSQL_properties_typeProperties_connectionString_secretName')]"
+					},
+					"ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId": {
+						"value": "[parameters('ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId')]"
+					},
+					"ADFv2_private_endpoint_adfv2_properties_groupId": {
+						"value": "[parameters('ADFv2_private_endpoint_adfv2_properties_groupId')]"
 					}
 				}
 			},
@@ -215,17 +218,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"demo_shir_to_SQLDB_connectionString": {
-						"value": "[parameters('demo_shir_to_SQLDB_connectionString')]"
+					"demo30_ADLS_accountKey": {
+						"value": "[parameters('demo30_ADLS_accountKey')]"
 					},
 					"demo_vnetdataflows_SQLDB_connectionString": {
 						"value": "[parameters('demo_vnetdataflows_SQLDB_connectionString')]"
-					},
-					"ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId": {
-						"value": "[parameters('ADFv2_private_endpoint_adfv2_properties_privateLinkResourceId')]"
-					},
-					"ADFv2_private_endpoint_adfv2_properties_groupId": {
-						"value": "[parameters('ADFv2_private_endpoint_adfv2_properties_groupId')]"
 					},
 					"AzureKeyVault1_properties_privateLinkResourceId": {
 						"value": "[parameters('AzureKeyVault1_properties_privateLinkResourceId')]"
@@ -253,6 +250,9 @@
 					},
 					"testsqlvmprivservice_properties_fqdns": {
 						"value": "[parameters('testsqlvmprivservice_properties_fqdns')]"
+					},
+					"demo30_ADLS_properties_typeProperties_url": {
+						"value": "[parameters('demo30_ADLS_properties_typeProperties_url')]"
 					},
 					"demo30_ADLS_MI_properties_typeProperties_url": {
 						"value": "[parameters('demo30_ADLS_MI_properties_typeProperties_url')]"

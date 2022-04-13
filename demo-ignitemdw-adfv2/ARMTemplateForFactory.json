@@ -2656,9 +2656,15 @@
 						"type": "SecureString",
 						"value": "[parameters('demo30_ADLS_accountKey')]"
 					}
+				},
+				"connectVia": {
+					"referenceName": "ManagedVNET",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ManagedVNET')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/demo30_ADLS_MI')]",
