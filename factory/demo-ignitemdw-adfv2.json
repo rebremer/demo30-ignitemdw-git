@@ -1,0 +1,12 @@
+{
+	"name": "demo-ignitemdw-adfv2",
+	"properties": {
+		"globalParameters": {
+			"database": {
+				"type": "string",
+				"value": "xyx"
+			}
+		}
+	},
+	"location": "eastus"
+}
